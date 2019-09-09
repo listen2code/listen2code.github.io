@@ -1,0 +1,1082 @@
+
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/assets/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/assets/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="通过Github Pages搭建站点的前提是需要有个github账号">
+<meta name="keywords" content="Android, Blog, listen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github pages + Jekyll 搭建技术博客">
+<meta property="og:url" content="http://localhost:4000/android/2016/05/27/GithubPages+Jekyll%E6%90%AD%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">
+<meta property="og:site_name" content="listen’s blog">
+<meta property="og:description" content="通过Github Pages搭建站点的前提是需要有个github账号">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/listen2code/article/blob/master/Github%20Pages+Jekyll%20%E6%90%AD%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/screenshot/step_1_1.png?raw=true">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Github pages + Jekyll 搭建技术博客">
+<meta name="twitter:description" content="通过Github Pages搭建站点的前提是需要有个github账号">
+<meta name="twitter:image" content="https://github.com/listen2code/article/blob/master/Github%20Pages+Jekyll%20%E6%90%AD%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/screenshot/step_1_1.png?raw=true">
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://localhost:4000/"/>
+
+
+
+
+
+  <title>Github pages + Jekyll 搭建技术博客 | listen’s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">listen’s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+<div id="posts" class="posts-expand">
+  
+  
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/android/2016/05/27/GithubPages+Jekyll%E6%90%AD%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="listen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/assets/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listen’s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+          
+          
+            Github pages + Jekyll 搭建技术博客
+          
+        </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-27T00:00:00+08:00">
+                2016-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/android" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+            
+                <div class="post-description">
+                    通过Github Pages搭建站点的前提是需要有个github账号
+                </div>
+            
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <h3 id="初始化github-pages">初始化Github Pages</h3>
+
+<ul>
+  <li>创建repository=username.github.io，username必须是github的username，不然后续可能会返回不到这个url</li>
+</ul>
+
+<p><img src="https://github.com/listen2code/article/blob/master/Github%20Pages+Jekyll%20%E6%90%AD%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/screenshot/step_1_1.png?raw=true" alt="step_1_1" /></p>
+
+<ul>
+  <li>给这个repository创建默认的index.html，就是首页
+    <div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code>// clone
+git clone https://github.com/listen2code/listen2code.github.io.git
+// create index.html
+cd listen2code.github.io
+echo "Hello World" &gt; index.html
+// push
+git add --all
+git commit -m "Initial commit"
+git push -u origin master
+</code></pre></td></tr></tbody></table></div>    </div>
+  </li>
+  <li>访问https://listen2code.github.io/</li>
+</ul>
+
+<blockquote>
+  <p>以上步骤参考<a href="https://pages.github.com/">Github Pages搭建</a>。站点初步已经搭建好了，接下来就要改造index.html，使其可以展示首页，博客分类等常见博客页面组件，这里需要使用Jekyll静态网页生成工具，也是Github Pages官方推荐的。</p>
+</blockquote>
+
+<h3 id="step-by-step-to-jekyll">Step by Step to <a href="https://jekyllrb.com/">Jekyll</a></h3>
+
+<h4 id="环境搭建由于jekyll是用ruby写的所以先搭建ruby环境版本240">环境搭建：由于Jekyll是用Ruby写的，所以先搭建Ruby环境（版本&gt;2.4.0）</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16</pre></td><td class="code"><pre class="highlight"><code># 安装 Homebrew
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# 安装 ruby
+brew install ruby
+
+# 将ruby path添加到环境变量中
+export PATH=/usr/local/opt/ruby/bin:$PATH
+
+# 重启terminal后，检查ruby安装情况
+
+which ruby
+# /usr/local/opt/ruby/bin/ruby
+
+ruby -v
+# ruby 2.6.4p104 (2019-08-28 revision 67798) [x86_64-darwin18]
+</code></pre></td></tr></tbody></table></div></div>
+<blockquote>
+  <p>mac系统默认的ruby可能和Homebrew安装的ruby冲突，需要进行以下配置，使默认找到的ruby为Homebrew下载的最新版本。</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>export PATH="/usr/local/opt/ruby/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/ruby/lib"
+export CPPFLAGS="-I/usr/local/opt/ruby/include"
+export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
+</code></pre></td></tr></tbody></table></div></div>
+
+<ul>
+  <li>安装jekyll：</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6</pre></td><td class="code"><pre class="highlight"><code># 安装jekyll
+gem install jekyll bundler
+
+# 任意选择一个目录，例如：/Users/xx/，执行以下命令，会在该目录下生成Gemfile配置文件
+bundle init
+# Writing new Gemfile to /Users/xx/Gemfile
+</code></pre></td></tr></tbody></table></div></div>
+
+<blockquote>
+  <p>打开/Users/xx/Gemfile文件，将”gem jekyll”添加在末尾</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7</pre></td><td class="code"><pre class="highlight"><code># frozen_string_literal: true
+
+source "https://rubygems.org"
+git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
+
+# 添加在这里
+gem "jekyll"
+</code></pre></td></tr></tbody></table></div></div>
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10</pre></td><td class="code"><pre class="highlight"><code># 执行"bundle"，安装相关gem依赖，这里卡住会有点慢
+bundle
+# 省略...
+# Bundle complete! 1 Gemfile dependency, 28 gems now installed.
+# Use `bundle info [gemname]` to see where a bundled gem is installed.
+
+# 检查bundle执行结果
+bundle info jekyll
+#jekyll (4.0.0)
+#	Summary: A simple, blog aware, static site generator
+</code></pre></td></tr></tbody></table></div></div>
+
+<h4 id="新建首页">新建首页</h4>
+
+<blockquote>
+  <p>新建个目录/User/xx/root，创建index.html</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10</pre></td><td class="code"><pre class="highlight"><code><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Home<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Hello World!<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></td></tr></tbody></table></div></div>
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code># 进入到root目录
+cd /User/xx/root
+
+bundle exec jekyll serve --trace
+# ...
+# Server address: http://127.0.0.1:4000
+# Server running... press ctrl-c to stop.
+
+# 执行"bundle exec"后，会在/User/xx/root/_site目录生成符合w3c标准的index.html文件，通过浏览器访问 http://127.0.0.1:4000，即可以看到显示"Hello World"的页面
+</code></pre></td></tr></tbody></table></div></div>
+
+<h4 id="liquid语法">Liquid语法</h4>
+
+<p>在html头部定义变量my_content，并可以在”{{}}”中使用Liquid表达式</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16</pre></td><td class="code"><pre class="highlight"><code>
+---
+my_content: Hello World!
+---
+
+<span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Home<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>{{ page.my_content }}<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+
+</code></pre></td></tr></tbody></table></div></div>
+
+<h4 id="_layouts目录用于存放布局模板文件">_layouts目录：用于存放布局模板文件</h4>
+
+<p>新建”/User/xx/root/_layouts/default.html”：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12</pre></td><td class="code"><pre class="highlight"><code>
+<span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>{{ page.title }}<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    {{ content }}
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>修改index.html，设置layout=default，相当于将index的文本内容include到default.html的”{{content}}”标签内，可以通过在_layout目录下定义布局模板，供其他页面引用，实现布局样式的统一：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5</pre></td><td class="code"><pre class="highlight"><code>---
+layout: default
+title: Home
+---
+&lt;h1&gt;"Hello World!"&lt;/h1&gt;
+</code></pre></td></tr></tbody></table></div></div>
+
+<h4 id="_includes目录用于存放可以复用的组件">_includes目录：用于存放可以复用的组件</h4>
+
+<p>新建”/User/xx/root/_includes/navigation.html”，设置导航栏的链接</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>&lt;nav&gt;
+  &lt;a href="/"&gt;Home&lt;/a&gt;
+  &lt;a href="/about.html"&gt;About&lt;/a&gt;
+&lt;/nav&gt;
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>修改default.html，通过include表达式将导航栏添加在布局模板中</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13</pre></td><td class="code"><pre class="highlight"><code>
+<span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>{{ page.title }}<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    {% include navigation.html %}
+    {{ content }}
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+
+</code></pre></td></tr></tbody></table></div></div>
+
+<h4 id="_data目录存放数据">_data目录：存放数据</h4>
+
+<p>新建”/User/xx/root/_data/navigation.yml”，Jekyll默认将生成site.data.navigation数据集合</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>- name: Home
+  link: /
+- name: About
+  link: /about.html
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>修改navigation.html，遍历site.data.navigation生成a标签</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code>
+&lt;nav&gt;
+  {% for item in site.data.navigation %}
+    &lt;a href="{{ item.link }}"&gt;
+      {{ item.name }}
+    &lt;/a&gt;
+  {% endfor %}
+&lt;/nav&gt;
+
+</code></pre></td></tr></tbody></table></div></div>
+
+<h4 id="_posts目录存放blog文件的目录">_posts目录：存放blog文件的目录，</h4>
+
+<p>新建”/User/xx/root/_posts/2019-1-1-blog1.html”，
+与_data目录同理，Jekyll将会在/User/xx/root/_site目录下生成”2019/01/01/blog1.html”</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5</pre></td><td class="code"><pre class="highlight"><code>---
+layout: post
+author: listen
+---
+this is blog1
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>新建”/User/xx/root/_layouts/post.html”，专门用于显示blog的布局模板</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code>
+---
+layout: default
+---
+&lt;h1&gt;{{ page.title }}&lt;/h1&gt;
+&lt;p&gt;{{ page.date | date_to_string }} - {{ page.author }}&lt;/p&gt;
+
+{{ content }}
+
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>新建”/User/xx/root/blog_list.html”，用于展示_posts目录下的blog列表</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13</pre></td><td class="code"><pre class="highlight"><code>
+---
+layout: default
+title: Blog
+---
+&lt;ul&gt;
+  {% for post in site.posts %}
+    &lt;li&gt;
+      &lt;h2&gt;&lt;a href="{{ post.url }}"&gt;{{ post.title }}&lt;/a&gt;&lt;/h2&gt;
+    &lt;/li&gt;
+  {% endfor %}
+&lt;/ul&gt;
+
+</code></pre></td></tr></tbody></table></div></div>
+
+<h4 id="发布将_site目录下的内容拷贝到github的usernamegithubio目录下即可完成发布">发布：将_site目录下的内容拷贝到github的username.github.io目录下即可完成发布</h4>
+
+<h3 id="jekyllthemes快速搭建">jekyllthemes快速搭建</h3>
+
+<blockquote>
+  <p>可以在http://jekyllthemes.org/ ，选择一个现成的jekyllthemes完成快速搭建</p>
+</blockquote>
+
+<ul>
+  <li>选择themes模板<a href="http://jekyllthemes.org/themes/jekyll-theme-next/">NexT</a>，并下载zip</li>
+  <li>解压后获得jekyll-theme-next-master目录</li>
+  <li>cd jekyll-theme-next-master，执行”bundle”下载相关gem依赖</li>
+  <li>根据<a href="http://theme-next.simpleyyt.com/getting-started.html">使用教程</a>修改jekyll-theme-next-master/_config.yml完成页面基础设置，如：页面组件布局，主题，头像，分类目录等</li>
+  <li>将blog文件放置在_posts目录下</li>
+  <li>cd jekyll-theme-next-master，执行”bundle exec jekyll serve –trace”，生成_site目录</li>
+  <li>将_site目录下的内容拷贝到listen2code.github.io的localpath，并同步到github</li>
+  <li>访问https://listen2code.github.io</li>
+</ul>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+      
+      
+
+      
+      
+        <div class="post-nav" id="post-nav-id">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/android/2016/11/27/DataBinding%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%80-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" rel="next" title="DataBinding学习笔记（一）源码分析">
+                <i class="fa fa-chevron-left"></i> DataBinding学习笔记（一）源码分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/tutorial/2015/12/25/next-tutorial/" rel="prev" title="Next Theme Tutorial">
+                Next Theme Tutorial <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+
+      
+    </footer>
+  </article>
+
+  <div class="post-spread">
+    
+  </div>
+</div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        
+        
+        
+
+
+
+
+
+
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/images/avatar.jpeg"
+               alt="listen" />
+          <p class="site-author-name" itemprop="name">listen</p>
+           
+              <p class="site-description motion-element" itemprop="description">a programmer’s tech world</p>
+          
+        </div>
+        <!-- <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav> -->
+
+        
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+            
+              <div class="post-toc-content">
+    <ol class=nav>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#初始化github-pages"> <span class="nav-number">1</span> <span class="nav-text">初始化Github Pages</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#step-by-step-to-jekyll"> <span class="nav-number">2</span> <span class="nav-text">Step by Step to Jekyll</a</span> </a> <ol class="nav-child"> <li class="nav-item nav-level-4"> <a class="nav-link" href="#环境搭建由于jekyll是用ruby写的所以先搭建ruby环境版本240"> <span class="nav-number">2.1</span> <span class="nav-text">环境搭建：由于Jekyll是用Ruby写的，所以先搭建Ruby环境（版本&gt;2.4.0）</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#新建首页"> <span class="nav-number">2.2</span> <span class="nav-text">新建首页</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#liquid语法"> <span class="nav-number">2.3</span> <span class="nav-text">Liquid语法</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#_layouts目录用于存放布局模板文件"> <span class="nav-number">2.4</span> <span class="nav-text">_layouts目录：用于存放布局模板文件</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#_includes目录用于存放可以复用的组件"> <span class="nav-number">2.5</span> <span class="nav-text">_includes目录：用于存放可以复用的组件</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#_data目录存放数据"> <span class="nav-number">2.6</span> <span class="nav-text">_data目录：存放数据</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#_posts目录存放blog文件的目录"> <span class="nav-number">2.7</span> <span class="nav-text">_posts目录：存放blog文件的目录，</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#发布将_site目录下的内容拷贝到github的usernamegithubio目录下即可完成发布"> <span class="nav-number">2.8</span> <span class="nav-text">发布：将_site目录下的内容拷贝到github的username.github.io目录下即可完成发布</span> </a> </li> </ol> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#jekyllthemes快速搭建"> <span class="nav-number">3</span> <span class="nav-text">jekyllthemes快速搭建</span> </a> </li>
+    </ol>
+  </div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listen</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+    
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+

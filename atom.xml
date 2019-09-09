@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-09-09T17:25:29+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">listen’s blog</title><subtitle>a programmer’s tech world</subtitle><author><name>listen</name></author><entry><title type="html">从客户端的角度设计后端的接口</title><link href="http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l/" rel="alternate" type="text/html" title="从客户端的角度设计后端的接口" /><published>2019-08-10T00:00:00+08:00</published><updated>2019-08-10T00:00:00+08:00</updated><id>http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l</id><content type="html" xml:base="http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l/">&lt;h4 id=&quot;前言&quot;&gt;前言&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-09-09T21:26:32+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">listen’s blog</title><subtitle>a programmer’s tech world</subtitle><author><name>listen</name></author><entry><title type="html">从客户端的角度设计后端的接口</title><link href="http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l/" rel="alternate" type="text/html" title="从客户端的角度设计后端的接口" /><published>2019-08-10T00:00:00+08:00</published><updated>2019-08-10T00:00:00+08:00</updated><id>http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l</id><content type="html" xml:base="http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l/">&lt;h4 id=&quot;前言&quot;&gt;前言&lt;/h4&gt;
 &lt;blockquote&gt;
   &lt;p&gt;兵马未动，粮草先行。在一款APP产品的各个版本迭代中，兵马的启动指的是真正开始敲代码的时候，粮草先行则是指前期的需求，交互，UI等评审准备阶段，还有本文要说的接口的设计与评审。虽然很多时候一个api接口的业务，数据逻辑是后端提供的，但真正使用这个接口的是客户端，一个前端功能的实现流程与逻辑，有时候只有客户端的RD才清楚，从某种意义来说，客户端算是接口的需求方。所以建议在前期接口设计和评审时，客户端的RD应该更多的思考和参与，什么时机调什么接口？每个接口需要哪些字段？数据含义怎么给？只有这些都考虑清楚，且达成一致并产出接口文档后，当项目真正启动时，根据接口协议进行开发，才能尽量避免各种不确定因素对项目整体进度的影响。本文介绍了接口设计中常见的规范，以及个人的一些思考与总结，水平有限，权当是抛砖引玉，如果有更好的设计，请在文章下方留言告诉我，谢谢。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -4544,7 +4544,288 @@ https://developer.android.com/topic/libraries/data-binding/index.html&lt;/p&gt;
 https://realm.io/cn/news/data-binding-android-boyar-mount/?utm_source=tuicool&amp;amp;utm_medium=referral&lt;/p&gt;
 
 &lt;p&gt;QQ音乐团队分享，比较贴近源码的介绍
-http://gold.xitu.io/entry/57e48e7ba22b9d006139c60b&lt;/p&gt;</content><author><name>listen</name></author><summary type="html">###开发阶段 #####UserModel.java public class UserModel { public String name; public String nickName; public int age; public UserModel(String name, String nickName, int age) { this.name = name; this.age = age; this.nickName = nickName; } public boolean isAge18() { return age &amp;gt;= 18; } } #####activity_main.xml 在xml中使用”@{}”标识符 &amp;lt;layout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; xmlns:tools=&quot;http://schemas.android.com/tools&quot;&amp;gt; &amp;lt;data&amp;gt; &amp;lt;variable name=&quot;user&quot; type=&quot;com.listen.test_databinding.UserModel&quot;/&amp;gt; &amp;lt;variable name=&quot;testClick&quot; type=&quot;android.view.View.OnClickListener&quot;/&amp;gt; &amp;lt;import type=&quot;android.view.View&quot;/&amp;gt; &amp;lt;/data&amp;gt; &amp;lt;LinearLayout android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;match_parent&quot; android:orientation=&quot;vertical&quot; tools:context=&quot;com.listen.test_databinding.MainActivity&quot;&amp;gt; &amp;lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:text='@{&quot;名字&quot; + user.name}'/&amp;gt; &amp;lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:text='@{user.nickName}' android:visibility=&quot;@{null == user.nickName ? View.VISIBLE : View.GONE}&quot;/&amp;gt; &amp;lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:text='@{user.isAge18() ? &quot;man&quot; : &quot;boy&quot;}'/&amp;gt; &amp;lt;Button android:id=&quot;@+id/btn_test&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;50dp&quot; android:onClick=&quot;@{testClick}&quot; android:text=&quot;测试&quot;/&amp;gt; &amp;lt;/LinearLayout&amp;gt; &amp;lt;/layout&amp;gt; #####MainActivity.java public class MainActivity extends AppCompatActivity { private ActivityMainBinding mBinding; @Override protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main); final UserModel user = new UserModel(&quot;listen&quot;, &quot;ls&quot;, 18); mBinding.setUser(user); mBinding.setTestClick(new View.OnClickListener() { @Override public void onClick(View view) { Toast.makeText(MainActivity.this, &quot;testClick&quot;, Toast.LENGTH_SHORT).show(); } }); } } ###编译阶段 ####1.Databinding会自动解析识别xml中的”@{}”标识符，并在以下目录生成2个xml文件 1.build/intermediates/data-binding-layout-out/activity_main.xml 2.build/intermediates/data-binding-info/debug/activity_main-layout.xml ######activity_main.xml 带“@{}”的xml文件是android系统无法识别的，为了向后兼容，需要在编译期统一转换成系统能识别的标准xml布局，而原先在布局中添加的”@{}”，”@{三目运算符}”等信息，则会存储在activity_main-layout.xml中。 &amp;lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; xmlns:tools=&quot;http://schemas.android.com/tools&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;match_parent&quot; android:orientation=&quot;vertical&quot; android:tag=&quot;layout/activity_main_0&quot; tools:context=&quot;com.listen.test_databinding.MainActivity&quot;&amp;gt; &amp;lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:tag=&quot;binding_1&quot;/&amp;gt; &amp;lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:tag=&quot;binding_2&quot; /&amp;gt; &amp;lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:tag=&quot;binding_3&quot;/&amp;gt; &amp;lt;Button android:id=&quot;@+id/btn_test&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;50dp&quot; android:tag=&quot;binding_4&quot; android:text=&quot;测试&quot;/&amp;gt; &amp;lt;/LinearLayout&amp;gt; ######activity_main-layout.xml（xml描述文件） 1.任何view只要用到了”@{}”标识，就会在activity_main-layout.xml中生成target描述，并根据该view在parent中的位置生成”binding_[index]”标识，并设置在tag中。 2.如果一个view即没有设置”android:id”，也没有使用”@{}”标识，则不会在activity_main-layout.xml中生成这个view的target描述。 3.LinearLayout比较特殊，并没有设置”android:id”，也没有使用”@{}”，但还是会生成一个默认的tag=”layout/activity_main_0”，表示它是根布局，在ViewDataBinding.java实例化时，需要判断根布局的tag，后面源码会分析到。 &amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&amp;gt; &amp;lt;Layout absoluteFilePath=&quot;/Users/lisong/Documents/AndroidStudioWorkSpace/Test_Databinding/app/src/main/res/layout/activity_main.xml&quot; directory=&quot;layout&quot; isMerge=&quot;false&quot; layout=&quot;activity_main&quot; modulePackage=&quot;com.listen.test_databinding&quot;&amp;gt; &amp;lt;Variables name=&quot;user&quot; declared=&quot;true&quot; type=&quot;com.listen.test_databinding.UserModel&quot;&amp;gt; ... &amp;lt;/Variables&amp;gt; &amp;lt;Variables name=&quot;testClick&quot; declared=&quot;true&quot; type=&quot;android.view.View.OnClickListener&quot;&amp;gt; ... &amp;lt;/Variables&amp;gt; &amp;lt;Imports name=&quot;View&quot; type=&quot;android.view.View&quot;&amp;gt; ... &amp;lt;/Imports&amp;gt; &amp;lt;Targets&amp;gt; &amp;lt;Target tag=&quot;layout/activity_main_0&quot; view=&quot;LinearLayout&quot;&amp;gt; &amp;lt;Expressions/&amp;gt; ... &amp;lt;/Target&amp;gt; &amp;lt;Target tag=&quot;binding_1&quot; view=&quot;TextView&quot;&amp;gt; &amp;lt;Expressions&amp;gt; &amp;lt;Expression attribute=&quot;android:text&quot; text=&quot;&quot;名字&quot; + user.name&quot;&amp;gt; ... &amp;lt;/Expression&amp;gt; &amp;lt;/Expressions&amp;gt; &amp;lt;/Target&amp;gt; &amp;lt;Target tag=&quot;binding_2&quot; view=&quot;TextView&quot;&amp;gt; &amp;lt;Expressions&amp;gt; &amp;lt;Expression attribute=&quot;android:text&quot; text=&quot;user.nickName&quot;&amp;gt; ... &amp;lt;/Expression&amp;gt; &amp;lt;Expression attribute=&quot;android:visibility&quot; text=&quot;null == user.nickName ? View.VISIBLE : View.GONE&quot;&amp;gt; ... &amp;lt;/Expression&amp;gt; &amp;lt;/Expressions&amp;gt; &amp;lt;/Target&amp;gt; &amp;lt;Target tag=&quot;binding_3&quot; view=&quot;TextView&quot;&amp;gt; &amp;lt;Expressions&amp;gt; &amp;lt;Expression attribute=&quot;android:text&quot; text=&quot;user.isAge18() ? &quot;man&quot; : &quot;boy&quot;&quot;&amp;gt; ... &amp;lt;/Expression&amp;gt; &amp;lt;/Expressions&amp;gt; &amp;lt;/Target&amp;gt; &amp;lt;Target id=&quot;@+id/btn_test&quot; tag=&quot;binding_4&quot; view=&quot;Button&quot;&amp;gt; &amp;lt;Expressions&amp;gt; &amp;lt;Expression attribute=&quot;android:onClick&quot; text=&quot;testClick&quot;&amp;gt; ... &amp;lt;/Expression&amp;gt; &amp;lt;/Expressions&amp;gt; &amp;lt;/Target&amp;gt; &amp;lt;/Targets&amp;gt; &amp;lt;/Layout&amp;gt; ####2.生成ActivityMainBinding.java和BR.java DataBinding根据解析后的activity_main-layout.xml，和layout下的activity_main.xml文件，生成build/intermediates/classes/debug/[项目路径]/databinding/ ActivityMainBinding.java和BR.java ######ActivityMainBinding主要具备以下功能 1.作为view和model的连接器，持有需要展示的数据和views的成员变量 2.将数据映射到view（就是setText，setOnClick等） 3.在UI线程更新数据 ######BR.java就是一个常量类 可以通过binding.setVariable(BRuser, new User())进行数据更新 public class BR { public static final int _all = 0; public static final int testClick = 1; public static final int user = 2; public BR() { } } public boolean setVariable(int variableId, Object variable) { switch(variableId) { case BR.testClick : setTestClick((android.view.View.OnClickListener) variable); return true; case BR.user : setUser((com.listen.test_databinding.UserModel) variable); return true; } return false; } ###运行阶段 Databinding框架最主要做的事，就是以上2步，接下来就是在代码中调用生成的ViewDataBinding，并进行数据绑定操作。 ######DataBindingUtil是一切的入口 ActivityMainBinding mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main); public static &amp;lt;T extends ViewDataBinding&amp;gt; T setContentView(Activity activity, int layoutId, DataBindingComponent bindingComponent) { activity.setContentView(layoutId);// 最终调用的还是activity.setContentView()，不过这里的layoutId是已经去掉&quot;@{}&quot;的标准xml布局 View decorView = activity.getWindow().getDecorView(); ViewGroup contentView = (ViewGroup) decorView.findViewById(android.R.id.content);//获取根顶级容器view return bindToAddedViews(bindingComponent, contentView, 0, layoutId); } ######取出布局的rootView，调用ActivityMainBinding.bind() private static &amp;lt;T extends ViewDataBinding&amp;gt; T bindToAddedViews(android.databinding.DataBindingComponent component, ViewGroup parent, int startChildren, int layoutId) { final int endChildren = parent.getChildCount(); final int childrenAdded = endChildren - startChildren; if (childrenAdded == 1) { // 从顶级容器view中获取当前布局的rootView，调用bind方法 final View childView = parent.getChildAt(endChildren - 1); return bind(component, childView, layoutId); } else { ... } } static &amp;lt;T extends ViewDataBinding&amp;gt; T bind(DataBindingComponent bindingComponent, View root, int layoutId) { // sMapper = DataBinderMapper.java return (T) sMapper.getDataBinder(bindingComponent, root, layoutId); } /** DataBinderMapper.java */ public android.databinding.ViewDataBinding getDataBinder(android.databinding.DataBindingComponent bindingComponent, android.view.View view, int layoutId) { switch(layoutId) { case com.listen.test_databinding.R.layout.activity_main: // 将rootView传递给ActivityMainBinding.bind() return com.listen.test_databinding.databinding.ActivityMainBinding.bind(view, bindingComponent); } return null; } 此处做了rootView的判断，如果传递过来的不是当前ViewDataBinding绑定的布局，则抛异常。所以即使rootView没有设置id，及”@{}”，在info-layout.xml中也会生成相应的target描述。 public static ActivityMainBinding bind(View view, DataBindingComponent bindingComponent) { if(!&quot;layout/activity_main_0&quot;.equals(view.getTag())) { throw new RuntimeException(&quot;view tag isn\'t correct on view:&quot; + view.getTag()); } else { return new ActivityMainBinding(bindingComponent, view); // ActivityMainBinding在此处初始化 } } 这里需要特别注意的是在编译期自动生成的activity_main.xml文件中自动添加了tag=”binding_1”，”binding_2”等，其实在初始化完这些view后，都已经清空，是不影响我们在代码中设置tag的；不过rootView并没有清除tag（就是xml布局最外层的layout），如果&amp;gt;=14以上版本，在代码里设置setTag(R.id.databinding,”anything”)，或，&amp;lt;14版本，在代码里设置setTag(“anything”)，则会报错，so，这个tag是由DataBinding占着的，使用上得小心。 public ActivityMainBinding(android.databinding.DataBindingComponent bindingComponent, View root) { super(bindingComponent, root, 0); // 遍历布局，找到所有views，并存储在bindings[]中，5表示布局一共有5个view，sIncludes存储被include进 // 来的布局，sViewsWithIds存储设置了&quot;android:id&quot;，但是没有用到&quot;@{}&quot;的view Object[] bindings = mapBindings(bindingComponent, root, 5, sIncludes, sViewsWithIds); // 将bindings[]中的view取出，赋值给当前各个view的成员变量，并清除tag，避免冲突 this.btnTest = (Button)bindings[4]; this.btnTest.setTag((Object)null); this.mboundView0 = (LinearLayout)bindings[0]; this.mboundView0.setTag((Object)null); this.mboundView1 = (TextView)bindings[1]; this.mboundView1.setTag((Object)null); this.mboundView2 = (TextView)bindings[2]; this.mboundView2.setTag((Object)null); this.mboundView3 = (TextView)bindings[3]; this.mboundView3.setTag((Object)null); this.setRootTag(root); /** ViewDatabBinding.java protected void setRootTag(View view) { //private static final boolean USE_TAG_ID = DataBinderMapper.TARGET_MIN_SDK &amp;gt;= 14; if (USE_TAG_ID) { view.setTag(R.id.dataBinding, this); } else { view.setTag(this); } } */ // 请求刷新，实现数据与view的绑定 this.invalidateAll(); } mapBindings()，其实就是递归遍历view树的过程，不过不是byId，而是byTag，寻找以”binding_“开头的view，并取出”binding_[索引]”中的索引，赋值给binding[]数组。所有的view只在一次遍历中获得，而如果是用findViewById的方式，每次调用都需要遍历一次view树[性能对比]。需要特别注意的是binding数组的元素不一定都是view或viewGroup，如果有include布局的时候binding数组存储的可能是include布局的viewDataBinding对象。 private static void mapBindings(DataBindingComponent bindingComponent, View view, Object[] bindings, ViewDataBinding.IncludedLayouts includes, SparseIntArray viewsWithIds, boolean isRoot) { ViewDataBinding existingBinding = getBinding(view); if(existingBinding == null) { Object objTag = view.getTag(); String tag = objTag instanceof String?(String)objTag:null; if(isRoot &amp;amp;&amp;amp; tag != null &amp;amp;&amp;amp; tag.startsWith(&quot;layout&quot;)) { // 如果是rootView，则从&quot;layout/activity_main_0&quot;中取出索引&quot;0&quot;，设置到bindings[0]中 viewGroup = tag.lastIndexOf(95); count = parseTagInt(tag, viewGroup + 1); if(bindings[count] == null) { bindings[count] = view; } ... } else if(tag != null &amp;amp;&amp;amp; tag.startsWith(&quot;binding_&quot;)) { // 同样判断tag，取出&quot;binding_1&quot;，&quot;bingding_2&quot;中的索引，赋值到bindings[]中 viewGroup = parseTagInt(tag, BINDING_NUMBER_START); if(bindings[viewGroup] == null) { bindings[viewGroup] = view; } ... } // isBound=false，说明当前的view既不是根布局，也没有用到&quot;@{}&quot;（如果有用到就会生成&quot;binding_&quot; // 的tag）；则通过id获取该view，并设置到bingding[] // 如果存在设置了id，但是没有“@{}”的view会被添加到sViewsWithIds中，如果 // &quot;binding_[index]&quot;的index最大为3，则view的起始index设置为4。 // static { // sIncludes = null; // sViewsWithIds = new android.util.SparseIntArray(); // sViewsWithIds.put(R.id.btn_test, 4); //} if(!isBound) { viewGroup = view.getId(); if(viewGroup &amp;gt; 0 &amp;amp;&amp;amp; viewsWithIds != null &amp;amp;&amp;amp; (count = viewsWithIds.get(viewGroup, -1)) &amp;gt;= 0 &amp;amp;&amp;amp; bindings[count] == null) { bindings[count] = view; } } if(view instanceof ViewGroup) { // 如果是view是个viewGroup，则遍历子view ViewGroup var25 = (ViewGroup)view; count = var25.getChildCount(); ... for(int i = 0; i &amp;lt; count; ++i) { View child = var25.getChildAt(i); boolean isInclude = false; if(indexInIncludes &amp;gt;= 0 &amp;amp;&amp;amp; child.getTag() instanceof String) { String childTag = (String)child.getTag(); if(childTag.endsWith(&quot;_0&quot;) &amp;amp;&amp;amp; childTag.startsWith(&quot;layout&quot;) &amp;amp;&amp;amp; childTag.indexOf(47) &amp;gt; 0) { // 如果当前view也是一个rootView，则判断tag中是否有include标识信息 // 如果包含include标签，生成的info-layout文件应该是以下样式： // &amp;lt;Target include=&quot;include_main&quot; tag=&quot;layout/activity_main_0&quot;&amp;gt; // &amp;lt;/Target&amp;gt; int includeIndex = findIncludeIndex(childTag, minInclude, includes, indexInIncludes); if(includeIndex &amp;gt;= 0) { isInclude = true; ... // 如果包含include信息，则重新调用DataBindingUtil.bind()生成ViewDataBinding，重复当前流程， // 不过当前的bindings[index]就不是一个view，而是一个viewDataBinding bindings[index] = DataBindingUtil.bind(bindingComponent, child, layoutId); ... } } } if(!isInclude) { // 如果只是一个viewGroup，不是include进来的布局，则重新调用mapBindings，只是isRoot=false，则会上面进入&quot;binding_&quot;的判断逻辑 mapBindings(bindingComponent, child, bindings, includes, viewsWithIds, false); } } } } } #####view遍历流程图 View都找到了，现在该是时候设置listener，data的时候了。这时候会通过invalidateAll()请求数据更新，层层调用后，还是回到了ActivityMainBinding的executeBindings()，在这个方法里将更新后的model数据，onclick等重新设置到Textview，Button上，完成了model-&amp;gt;view的单向绑定。 // 子类：xxxViewDataBinding extends ViewDataBinding public void invalidateAll() { synchronized(this) { this.mDirtyFlags = 4L; } this.requestRebind(); } // 父类：ViewDataBinding.java // 通过handler.post()执行mRebindRunnable protected void requestRebind() { ... mUIThreadHandler.post(mRebindRunnable); } // mRebindRunnable调用了executePendingBindings() private final Runnable mRebindRunnable = new Runnable() { @Override public void run() { ... executePendingBindings(); } }; // executePendingBindings调用了executeBindings() public void executePendingBindings() { ... executeBindings(); ... } // 子类：xxxViewDataBinding extends ViewDataBinding protected void executeBindings() { ... // 当调用ViewDataBinding.setUser(new User())时，就是给成员变量mUser赋值，在这里获取this.mUser UserModel user = this.mUser; if((dirtyFlags &amp;amp; 6L) != 0L) { // 获取并构建数据，所以model中的字段要么为public，要么提供一个getter方法，不然这里无法获取 // 可以看到，在xml中的@{}表达式，此时已经解析成对应的方法isAge18，user.name等 if(user != null) { userIsAge18User = user.isAge18(); nameUser = user.name; nickNameUser = user.nickName; } ... // 获取并构建数据 userIsAge18UserStrin = userIsAge18User?&quot;man&quot;:&quot;boy&quot;; stringNameUser = &quot;名字&quot; + nameUser; ObjectnullNickNameUs1 = null == nickNameUser; ... objectnullNickNameUs = ObjectnullNickNameUs1?0:8; } // 设置listener if((dirtyFlags &amp;amp; 5L) != 0L) { this.btnTest.setOnClickListener(testClick); } // 通过TextViewBindingAdapter将数据设置到TextView上 if((dirtyFlags &amp;amp; 6L) != 0L) { TextViewBindingAdapter.setText(this.mboundView1, stringNameUser); TextViewBindingAdapter.setText(this.mboundView2, nickNameUser); this.mboundView2.setVisibility(objectnullNickNameUs); TextViewBindingAdapter.setText(this.mboundView3, userIsAge18UserStrin); } } ######以上便是当我们通过DataBindingUtil.setContentView()对Databinding进行初始化，以及当我们获取到最新数据，通过Binding.setModel进行数据更新时的操作流程。 ###参考 英文官方文档 https://developer.android.com/topic/libraries/data-binding/index.html Google开发团队介绍DataDinding使用 https://realm.io/cn/news/data-binding-android-boyar-mount/?utm_source=tuicool&amp;amp;utm_medium=referral QQ音乐团队分享，比较贴近源码的介绍 http://gold.xitu.io/entry/57e48e7ba22b9d006139c60b</summary></entry><entry><title type="html">Next Theme Tutorial</title><link href="http://localhost:4000/tutorial/2015/12/25/next-tutorial/" rel="alternate" type="text/html" title="Next Theme Tutorial" /><published>2015-12-25T00:00:00+08:00</published><updated>2015-12-25T00:00:00+08:00</updated><id>http://localhost:4000/tutorial/2015/12/25/next-tutorial</id><content type="html" xml:base="http://localhost:4000/tutorial/2015/12/25/next-tutorial/">&lt;blockquote&gt;
+http://gold.xitu.io/entry/57e48e7ba22b9d006139c60b&lt;/p&gt;</content><author><name>listen</name></author><summary type="html">###开发阶段 #####UserModel.java public class UserModel { public String name; public String nickName; public int age; public UserModel(String name, String nickName, int age) { this.name = name; this.age = age; this.nickName = nickName; } public boolean isAge18() { return age &amp;gt;= 18; } } #####activity_main.xml 在xml中使用”@{}”标识符 &amp;lt;layout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; xmlns:tools=&quot;http://schemas.android.com/tools&quot;&amp;gt; &amp;lt;data&amp;gt; &amp;lt;variable name=&quot;user&quot; type=&quot;com.listen.test_databinding.UserModel&quot;/&amp;gt; &amp;lt;variable name=&quot;testClick&quot; type=&quot;android.view.View.OnClickListener&quot;/&amp;gt; &amp;lt;import type=&quot;android.view.View&quot;/&amp;gt; &amp;lt;/data&amp;gt; &amp;lt;LinearLayout android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;match_parent&quot; android:orientation=&quot;vertical&quot; tools:context=&quot;com.listen.test_databinding.MainActivity&quot;&amp;gt; &amp;lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:text='@{&quot;名字&quot; + user.name}'/&amp;gt; &amp;lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:text='@{user.nickName}' android:visibility=&quot;@{null == user.nickName ? View.VISIBLE : View.GONE}&quot;/&amp;gt; &amp;lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:text='@{user.isAge18() ? &quot;man&quot; : &quot;boy&quot;}'/&amp;gt; &amp;lt;Button android:id=&quot;@+id/btn_test&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;50dp&quot; android:onClick=&quot;@{testClick}&quot; android:text=&quot;测试&quot;/&amp;gt; &amp;lt;/LinearLayout&amp;gt; &amp;lt;/layout&amp;gt; #####MainActivity.java public class MainActivity extends AppCompatActivity { private ActivityMainBinding mBinding; @Override protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main); final UserModel user = new UserModel(&quot;listen&quot;, &quot;ls&quot;, 18); mBinding.setUser(user); mBinding.setTestClick(new View.OnClickListener() { @Override public void onClick(View view) { Toast.makeText(MainActivity.this, &quot;testClick&quot;, Toast.LENGTH_SHORT).show(); } }); } } ###编译阶段 ####1.Databinding会自动解析识别xml中的”@{}”标识符，并在以下目录生成2个xml文件 1.build/intermediates/data-binding-layout-out/activity_main.xml 2.build/intermediates/data-binding-info/debug/activity_main-layout.xml ######activity_main.xml 带“@{}”的xml文件是android系统无法识别的，为了向后兼容，需要在编译期统一转换成系统能识别的标准xml布局，而原先在布局中添加的”@{}”，”@{三目运算符}”等信息，则会存储在activity_main-layout.xml中。 &amp;lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; xmlns:tools=&quot;http://schemas.android.com/tools&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;match_parent&quot; android:orientation=&quot;vertical&quot; android:tag=&quot;layout/activity_main_0&quot; tools:context=&quot;com.listen.test_databinding.MainActivity&quot;&amp;gt; &amp;lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:tag=&quot;binding_1&quot;/&amp;gt; &amp;lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:tag=&quot;binding_2&quot; /&amp;gt; &amp;lt;TextView android:layout_width=&quot;wrap_content&quot; android:layout_height=&quot;wrap_content&quot; android:tag=&quot;binding_3&quot;/&amp;gt; &amp;lt;Button android:id=&quot;@+id/btn_test&quot; android:layout_width=&quot;match_parent&quot; android:layout_height=&quot;50dp&quot; android:tag=&quot;binding_4&quot; android:text=&quot;测试&quot;/&amp;gt; &amp;lt;/LinearLayout&amp;gt; ######activity_main-layout.xml（xml描述文件） 1.任何view只要用到了”@{}”标识，就会在activity_main-layout.xml中生成target描述，并根据该view在parent中的位置生成”binding_[index]”标识，并设置在tag中。 2.如果一个view即没有设置”android:id”，也没有使用”@{}”标识，则不会在activity_main-layout.xml中生成这个view的target描述。 3.LinearLayout比较特殊，并没有设置”android:id”，也没有使用”@{}”，但还是会生成一个默认的tag=”layout/activity_main_0”，表示它是根布局，在ViewDataBinding.java实例化时，需要判断根布局的tag，后面源码会分析到。 &amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&amp;gt; &amp;lt;Layout absoluteFilePath=&quot;/Users/lisong/Documents/AndroidStudioWorkSpace/Test_Databinding/app/src/main/res/layout/activity_main.xml&quot; directory=&quot;layout&quot; isMerge=&quot;false&quot; layout=&quot;activity_main&quot; modulePackage=&quot;com.listen.test_databinding&quot;&amp;gt; &amp;lt;Variables name=&quot;user&quot; declared=&quot;true&quot; type=&quot;com.listen.test_databinding.UserModel&quot;&amp;gt; ... &amp;lt;/Variables&amp;gt; &amp;lt;Variables name=&quot;testClick&quot; declared=&quot;true&quot; type=&quot;android.view.View.OnClickListener&quot;&amp;gt; ... &amp;lt;/Variables&amp;gt; &amp;lt;Imports name=&quot;View&quot; type=&quot;android.view.View&quot;&amp;gt; ... &amp;lt;/Imports&amp;gt; &amp;lt;Targets&amp;gt; &amp;lt;Target tag=&quot;layout/activity_main_0&quot; view=&quot;LinearLayout&quot;&amp;gt; &amp;lt;Expressions/&amp;gt; ... &amp;lt;/Target&amp;gt; &amp;lt;Target tag=&quot;binding_1&quot; view=&quot;TextView&quot;&amp;gt; &amp;lt;Expressions&amp;gt; &amp;lt;Expression attribute=&quot;android:text&quot; text=&quot;&quot;名字&quot; + user.name&quot;&amp;gt; ... &amp;lt;/Expression&amp;gt; &amp;lt;/Expressions&amp;gt; &amp;lt;/Target&amp;gt; &amp;lt;Target tag=&quot;binding_2&quot; view=&quot;TextView&quot;&amp;gt; &amp;lt;Expressions&amp;gt; &amp;lt;Expression attribute=&quot;android:text&quot; text=&quot;user.nickName&quot;&amp;gt; ... &amp;lt;/Expression&amp;gt; &amp;lt;Expression attribute=&quot;android:visibility&quot; text=&quot;null == user.nickName ? View.VISIBLE : View.GONE&quot;&amp;gt; ... &amp;lt;/Expression&amp;gt; &amp;lt;/Expressions&amp;gt; &amp;lt;/Target&amp;gt; &amp;lt;Target tag=&quot;binding_3&quot; view=&quot;TextView&quot;&amp;gt; &amp;lt;Expressions&amp;gt; &amp;lt;Expression attribute=&quot;android:text&quot; text=&quot;user.isAge18() ? &quot;man&quot; : &quot;boy&quot;&quot;&amp;gt; ... &amp;lt;/Expression&amp;gt; &amp;lt;/Expressions&amp;gt; &amp;lt;/Target&amp;gt; &amp;lt;Target id=&quot;@+id/btn_test&quot; tag=&quot;binding_4&quot; view=&quot;Button&quot;&amp;gt; &amp;lt;Expressions&amp;gt; &amp;lt;Expression attribute=&quot;android:onClick&quot; text=&quot;testClick&quot;&amp;gt; ... &amp;lt;/Expression&amp;gt; &amp;lt;/Expressions&amp;gt; &amp;lt;/Target&amp;gt; &amp;lt;/Targets&amp;gt; &amp;lt;/Layout&amp;gt; ####2.生成ActivityMainBinding.java和BR.java DataBinding根据解析后的activity_main-layout.xml，和layout下的activity_main.xml文件，生成build/intermediates/classes/debug/[项目路径]/databinding/ ActivityMainBinding.java和BR.java ######ActivityMainBinding主要具备以下功能 1.作为view和model的连接器，持有需要展示的数据和views的成员变量 2.将数据映射到view（就是setText，setOnClick等） 3.在UI线程更新数据 ######BR.java就是一个常量类 可以通过binding.setVariable(BRuser, new User())进行数据更新 public class BR { public static final int _all = 0; public static final int testClick = 1; public static final int user = 2; public BR() { } } public boolean setVariable(int variableId, Object variable) { switch(variableId) { case BR.testClick : setTestClick((android.view.View.OnClickListener) variable); return true; case BR.user : setUser((com.listen.test_databinding.UserModel) variable); return true; } return false; } ###运行阶段 Databinding框架最主要做的事，就是以上2步，接下来就是在代码中调用生成的ViewDataBinding，并进行数据绑定操作。 ######DataBindingUtil是一切的入口 ActivityMainBinding mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main); public static &amp;lt;T extends ViewDataBinding&amp;gt; T setContentView(Activity activity, int layoutId, DataBindingComponent bindingComponent) { activity.setContentView(layoutId);// 最终调用的还是activity.setContentView()，不过这里的layoutId是已经去掉&quot;@{}&quot;的标准xml布局 View decorView = activity.getWindow().getDecorView(); ViewGroup contentView = (ViewGroup) decorView.findViewById(android.R.id.content);//获取根顶级容器view return bindToAddedViews(bindingComponent, contentView, 0, layoutId); } ######取出布局的rootView，调用ActivityMainBinding.bind() private static &amp;lt;T extends ViewDataBinding&amp;gt; T bindToAddedViews(android.databinding.DataBindingComponent component, ViewGroup parent, int startChildren, int layoutId) { final int endChildren = parent.getChildCount(); final int childrenAdded = endChildren - startChildren; if (childrenAdded == 1) { // 从顶级容器view中获取当前布局的rootView，调用bind方法 final View childView = parent.getChildAt(endChildren - 1); return bind(component, childView, layoutId); } else { ... } } static &amp;lt;T extends ViewDataBinding&amp;gt; T bind(DataBindingComponent bindingComponent, View root, int layoutId) { // sMapper = DataBinderMapper.java return (T) sMapper.getDataBinder(bindingComponent, root, layoutId); } /** DataBinderMapper.java */ public android.databinding.ViewDataBinding getDataBinder(android.databinding.DataBindingComponent bindingComponent, android.view.View view, int layoutId) { switch(layoutId) { case com.listen.test_databinding.R.layout.activity_main: // 将rootView传递给ActivityMainBinding.bind() return com.listen.test_databinding.databinding.ActivityMainBinding.bind(view, bindingComponent); } return null; } 此处做了rootView的判断，如果传递过来的不是当前ViewDataBinding绑定的布局，则抛异常。所以即使rootView没有设置id，及”@{}”，在info-layout.xml中也会生成相应的target描述。 public static ActivityMainBinding bind(View view, DataBindingComponent bindingComponent) { if(!&quot;layout/activity_main_0&quot;.equals(view.getTag())) { throw new RuntimeException(&quot;view tag isn\'t correct on view:&quot; + view.getTag()); } else { return new ActivityMainBinding(bindingComponent, view); // ActivityMainBinding在此处初始化 } } 这里需要特别注意的是在编译期自动生成的activity_main.xml文件中自动添加了tag=”binding_1”，”binding_2”等，其实在初始化完这些view后，都已经清空，是不影响我们在代码中设置tag的；不过rootView并没有清除tag（就是xml布局最外层的layout），如果&amp;gt;=14以上版本，在代码里设置setTag(R.id.databinding,”anything”)，或，&amp;lt;14版本，在代码里设置setTag(“anything”)，则会报错，so，这个tag是由DataBinding占着的，使用上得小心。 public ActivityMainBinding(android.databinding.DataBindingComponent bindingComponent, View root) { super(bindingComponent, root, 0); // 遍历布局，找到所有views，并存储在bindings[]中，5表示布局一共有5个view，sIncludes存储被include进 // 来的布局，sViewsWithIds存储设置了&quot;android:id&quot;，但是没有用到&quot;@{}&quot;的view Object[] bindings = mapBindings(bindingComponent, root, 5, sIncludes, sViewsWithIds); // 将bindings[]中的view取出，赋值给当前各个view的成员变量，并清除tag，避免冲突 this.btnTest = (Button)bindings[4]; this.btnTest.setTag((Object)null); this.mboundView0 = (LinearLayout)bindings[0]; this.mboundView0.setTag((Object)null); this.mboundView1 = (TextView)bindings[1]; this.mboundView1.setTag((Object)null); this.mboundView2 = (TextView)bindings[2]; this.mboundView2.setTag((Object)null); this.mboundView3 = (TextView)bindings[3]; this.mboundView3.setTag((Object)null); this.setRootTag(root); /** ViewDatabBinding.java protected void setRootTag(View view) { //private static final boolean USE_TAG_ID = DataBinderMapper.TARGET_MIN_SDK &amp;gt;= 14; if (USE_TAG_ID) { view.setTag(R.id.dataBinding, this); } else { view.setTag(this); } } */ // 请求刷新，实现数据与view的绑定 this.invalidateAll(); } mapBindings()，其实就是递归遍历view树的过程，不过不是byId，而是byTag，寻找以”binding_“开头的view，并取出”binding_[索引]”中的索引，赋值给binding[]数组。所有的view只在一次遍历中获得，而如果是用findViewById的方式，每次调用都需要遍历一次view树[性能对比]。需要特别注意的是binding数组的元素不一定都是view或viewGroup，如果有include布局的时候binding数组存储的可能是include布局的viewDataBinding对象。 private static void mapBindings(DataBindingComponent bindingComponent, View view, Object[] bindings, ViewDataBinding.IncludedLayouts includes, SparseIntArray viewsWithIds, boolean isRoot) { ViewDataBinding existingBinding = getBinding(view); if(existingBinding == null) { Object objTag = view.getTag(); String tag = objTag instanceof String?(String)objTag:null; if(isRoot &amp;amp;&amp;amp; tag != null &amp;amp;&amp;amp; tag.startsWith(&quot;layout&quot;)) { // 如果是rootView，则从&quot;layout/activity_main_0&quot;中取出索引&quot;0&quot;，设置到bindings[0]中 viewGroup = tag.lastIndexOf(95); count = parseTagInt(tag, viewGroup + 1); if(bindings[count] == null) { bindings[count] = view; } ... } else if(tag != null &amp;amp;&amp;amp; tag.startsWith(&quot;binding_&quot;)) { // 同样判断tag，取出&quot;binding_1&quot;，&quot;bingding_2&quot;中的索引，赋值到bindings[]中 viewGroup = parseTagInt(tag, BINDING_NUMBER_START); if(bindings[viewGroup] == null) { bindings[viewGroup] = view; } ... } // isBound=false，说明当前的view既不是根布局，也没有用到&quot;@{}&quot;（如果有用到就会生成&quot;binding_&quot; // 的tag）；则通过id获取该view，并设置到bingding[] // 如果存在设置了id，但是没有“@{}”的view会被添加到sViewsWithIds中，如果 // &quot;binding_[index]&quot;的index最大为3，则view的起始index设置为4。 // static { // sIncludes = null; // sViewsWithIds = new android.util.SparseIntArray(); // sViewsWithIds.put(R.id.btn_test, 4); //} if(!isBound) { viewGroup = view.getId(); if(viewGroup &amp;gt; 0 &amp;amp;&amp;amp; viewsWithIds != null &amp;amp;&amp;amp; (count = viewsWithIds.get(viewGroup, -1)) &amp;gt;= 0 &amp;amp;&amp;amp; bindings[count] == null) { bindings[count] = view; } } if(view instanceof ViewGroup) { // 如果是view是个viewGroup，则遍历子view ViewGroup var25 = (ViewGroup)view; count = var25.getChildCount(); ... for(int i = 0; i &amp;lt; count; ++i) { View child = var25.getChildAt(i); boolean isInclude = false; if(indexInIncludes &amp;gt;= 0 &amp;amp;&amp;amp; child.getTag() instanceof String) { String childTag = (String)child.getTag(); if(childTag.endsWith(&quot;_0&quot;) &amp;amp;&amp;amp; childTag.startsWith(&quot;layout&quot;) &amp;amp;&amp;amp; childTag.indexOf(47) &amp;gt; 0) { // 如果当前view也是一个rootView，则判断tag中是否有include标识信息 // 如果包含include标签，生成的info-layout文件应该是以下样式： // &amp;lt;Target include=&quot;include_main&quot; tag=&quot;layout/activity_main_0&quot;&amp;gt; // &amp;lt;/Target&amp;gt; int includeIndex = findIncludeIndex(childTag, minInclude, includes, indexInIncludes); if(includeIndex &amp;gt;= 0) { isInclude = true; ... // 如果包含include信息，则重新调用DataBindingUtil.bind()生成ViewDataBinding，重复当前流程， // 不过当前的bindings[index]就不是一个view，而是一个viewDataBinding bindings[index] = DataBindingUtil.bind(bindingComponent, child, layoutId); ... } } } if(!isInclude) { // 如果只是一个viewGroup，不是include进来的布局，则重新调用mapBindings，只是isRoot=false，则会上面进入&quot;binding_&quot;的判断逻辑 mapBindings(bindingComponent, child, bindings, includes, viewsWithIds, false); } } } } } #####view遍历流程图 View都找到了，现在该是时候设置listener，data的时候了。这时候会通过invalidateAll()请求数据更新，层层调用后，还是回到了ActivityMainBinding的executeBindings()，在这个方法里将更新后的model数据，onclick等重新设置到Textview，Button上，完成了model-&amp;gt;view的单向绑定。 // 子类：xxxViewDataBinding extends ViewDataBinding public void invalidateAll() { synchronized(this) { this.mDirtyFlags = 4L; } this.requestRebind(); } // 父类：ViewDataBinding.java // 通过handler.post()执行mRebindRunnable protected void requestRebind() { ... mUIThreadHandler.post(mRebindRunnable); } // mRebindRunnable调用了executePendingBindings() private final Runnable mRebindRunnable = new Runnable() { @Override public void run() { ... executePendingBindings(); } }; // executePendingBindings调用了executeBindings() public void executePendingBindings() { ... executeBindings(); ... } // 子类：xxxViewDataBinding extends ViewDataBinding protected void executeBindings() { ... // 当调用ViewDataBinding.setUser(new User())时，就是给成员变量mUser赋值，在这里获取this.mUser UserModel user = this.mUser; if((dirtyFlags &amp;amp; 6L) != 0L) { // 获取并构建数据，所以model中的字段要么为public，要么提供一个getter方法，不然这里无法获取 // 可以看到，在xml中的@{}表达式，此时已经解析成对应的方法isAge18，user.name等 if(user != null) { userIsAge18User = user.isAge18(); nameUser = user.name; nickNameUser = user.nickName; } ... // 获取并构建数据 userIsAge18UserStrin = userIsAge18User?&quot;man&quot;:&quot;boy&quot;; stringNameUser = &quot;名字&quot; + nameUser; ObjectnullNickNameUs1 = null == nickNameUser; ... objectnullNickNameUs = ObjectnullNickNameUs1?0:8; } // 设置listener if((dirtyFlags &amp;amp; 5L) != 0L) { this.btnTest.setOnClickListener(testClick); } // 通过TextViewBindingAdapter将数据设置到TextView上 if((dirtyFlags &amp;amp; 6L) != 0L) { TextViewBindingAdapter.setText(this.mboundView1, stringNameUser); TextViewBindingAdapter.setText(this.mboundView2, nickNameUser); this.mboundView2.setVisibility(objectnullNickNameUs); TextViewBindingAdapter.setText(this.mboundView3, userIsAge18UserStrin); } } ######以上便是当我们通过DataBindingUtil.setContentView()对Databinding进行初始化，以及当我们获取到最新数据，通过Binding.setModel进行数据更新时的操作流程。 ###参考 英文官方文档 https://developer.android.com/topic/libraries/data-binding/index.html Google开发团队介绍DataDinding使用 https://realm.io/cn/news/data-binding-android-boyar-mount/?utm_source=tuicool&amp;amp;utm_medium=referral QQ音乐团队分享，比较贴近源码的介绍 http://gold.xitu.io/entry/57e48e7ba22b9d006139c60b</summary></entry><entry><title type="html">Github pages + Jekyll 搭建技术博客</title><link href="http://localhost:4000/android/2016/05/27/GithubPages+Jekyll%E6%90%AD%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/" rel="alternate" type="text/html" title="Github pages + Jekyll 搭建技术博客" /><published>2016-05-27T00:00:00+08:00</published><updated>2016-05-27T00:00:00+08:00</updated><id>http://localhost:4000/android/2016/05/27/GithubPages+Jekyll%E6%90%AD%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2</id><content type="html" xml:base="http://localhost:4000/android/2016/05/27/GithubPages+Jekyll%E6%90%AD%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/">&lt;h3 id=&quot;初始化github-pages&quot;&gt;初始化Github Pages&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;创建repository=username.github.io，username必须是github的username，不然后续可能会返回不到这个url&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://github.com/listen2code/article/blob/master/Github%20Pages+Jekyll%20%E6%90%AD%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/screenshot/step_1_1.png?raw=true&quot; alt=&quot;step_1_1&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;给这个repository创建默认的index.html，就是首页
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// clone
+git clone https://github.com/listen2code/listen2code.github.io.git
+// create index.html
+cd listen2code.github.io
+echo &quot;Hello World&quot; &amp;gt; index.html
+// push
+git add --all
+git commit -m &quot;Initial commit&quot;
+git push -u origin master
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;访问https://listen2code.github.io/&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;以上步骤参考&lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages搭建&lt;/a&gt;。站点初步已经搭建好了，接下来就要改造index.html，使其可以展示首页，博客分类等常见博客页面组件，这里需要使用Jekyll静态网页生成工具，也是Github Pages官方推荐的。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;step-by-step-to-jekyll&quot;&gt;Step by Step to &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h4 id=&quot;环境搭建由于jekyll是用ruby写的所以先搭建ruby环境版本240&quot;&gt;环境搭建：由于Jekyll是用Ruby写的，所以先搭建Ruby环境（版本&amp;gt;2.4.0）&lt;/h4&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 安装 Homebrew
+/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
+
+# 安装 ruby
+brew install ruby
+
+# 将ruby path添加到环境变量中
+export PATH=/usr/local/opt/ruby/bin:$PATH
+
+# 重启terminal后，检查ruby安装情况
+
+which ruby
+# /usr/local/opt/ruby/bin/ruby
+
+ruby -v
+# ruby 2.6.4p104 (2019-08-28 revision 67798) [x86_64-darwin18]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;mac系统默认的ruby可能和Homebrew安装的ruby冲突，需要进行以下配置，使默认找到的ruby为Homebrew下载的最新版本。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export PATH=&quot;/usr/local/opt/ruby/bin:$PATH&quot;
+export LDFLAGS=&quot;-L/usr/local/opt/ruby/lib&quot;
+export CPPFLAGS=&quot;-I/usr/local/opt/ruby/include&quot;
+export PKG_CONFIG_PATH=&quot;/usr/local/opt/ruby/lib/pkgconfig&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;安装jekyll：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 安装jekyll
+gem install jekyll bundler
+
+# 任意选择一个目录，例如：/Users/xx/，执行以下命令，会在该目录下生成Gemfile配置文件
+bundle init
+# Writing new Gemfile to /Users/xx/Gemfile
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;打开/Users/xx/Gemfile文件，将”gem jekyll”添加在末尾&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# frozen_string_literal: true
+
+source &quot;https://rubygems.org&quot;
+git_source(:github) {|repo_name| &quot;https://github.com/#{repo_name}&quot; }
+
+# 添加在这里
+gem &quot;jekyll&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 执行&quot;bundle&quot;，安装相关gem依赖，这里卡住会有点慢
+bundle
+# 省略...
+# Bundle complete! 1 Gemfile dependency, 28 gems now installed.
+# Use `bundle info [gemname]` to see where a bundled gem is installed.
+
+# 检查bundle执行结果
+bundle info jekyll
+#jekyll (4.0.0)
+#	Summary: A simple, blog aware, static site generator
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;新建首页&quot;&gt;新建首页&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;新建个目录/User/xx/root，创建index.html&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;!doctype html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;charset=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Home&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Hello World!&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 进入到root目录
+cd /User/xx/root
+
+bundle exec jekyll serve --trace
+# ...
+# Server address: http://127.0.0.1:4000
+# Server running... press ctrl-c to stop.
+
+# 执行&quot;bundle exec&quot;后，会在/User/xx/root/_site目录生成符合w3c标准的index.html文件，通过浏览器访问 http://127.0.0.1:4000，即可以看到显示&quot;Hello World&quot;的页面
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;liquid语法&quot;&gt;Liquid语法&lt;/h4&gt;
+
+&lt;p&gt;在html头部定义变量my_content，并可以在”{{}}”中使用Liquid表达式&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+---
+my_content: Hello World!
+---
+
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;!doctype html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;charset=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Home&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;{{ page.my_content }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;_layouts目录用于存放布局模板文件&quot;&gt;_layouts目录：用于存放布局模板文件&lt;/h4&gt;
+
+&lt;p&gt;新建”/User/xx/root/_layouts/default.html”：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;!doctype html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;charset=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;{{ page.title }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+    {{ content }}
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;修改index.html，设置layout=default，相当于将index的文本内容include到default.html的”{{content}}”标签内，可以通过在_layout目录下定义布局模板，供其他页面引用，实现布局样式的统一：&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
+layout: default
+title: Home
+---
+&amp;lt;h1&amp;gt;&quot;Hello World!&quot;&amp;lt;/h1&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;_includes目录用于存放可以复用的组件&quot;&gt;_includes目录：用于存放可以复用的组件&lt;/h4&gt;
+
+&lt;p&gt;新建”/User/xx/root/_includes/navigation.html”，设置导航栏的链接&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;nav&amp;gt;
+  &amp;lt;a href=&quot;/&quot;&amp;gt;Home&amp;lt;/a&amp;gt;
+  &amp;lt;a href=&quot;/about.html&quot;&amp;gt;About&amp;lt;/a&amp;gt;
+&amp;lt;/nav&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;修改default.html，通过include表达式将导航栏添加在布局模板中&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;!doctype html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;meta&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;charset=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;utf-8&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;{{ page.title }}&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+    {% include navigation.html %}
+    {{ content }}
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;_data目录存放数据&quot;&gt;_data目录：存放数据&lt;/h4&gt;
+
+&lt;p&gt;新建”/User/xx/root/_data/navigation.yml”，Jekyll默认将生成site.data.navigation数据集合&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: Home
+  link: /
+- name: About
+  link: /about.html
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;修改navigation.html，遍历site.data.navigation生成a标签&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&amp;lt;nav&amp;gt;
+  {% for item in site.data.navigation %}
+    &amp;lt;a href=&quot;{{ item.link }}&quot;&amp;gt;
+      {{ item.name }}
+    &amp;lt;/a&amp;gt;
+  {% endfor %}
+&amp;lt;/nav&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;_posts目录存放blog文件的目录&quot;&gt;_posts目录：存放blog文件的目录，&lt;/h4&gt;
+
+&lt;p&gt;新建”/User/xx/root/_posts/2019-1-1-blog1.html”，
+与_data目录同理，Jekyll将会在/User/xx/root/_site目录下生成”2019/01/01/blog1.html”&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
+layout: post
+author: listen
+---
+this is blog1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;新建”/User/xx/root/_layouts/post.html”，专门用于显示blog的布局模板&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+---
+layout: default
+---
+&amp;lt;h1&amp;gt;{{ page.title }}&amp;lt;/h1&amp;gt;
+&amp;lt;p&amp;gt;{{ page.date | date_to_string }} - {{ page.author }}&amp;lt;/p&amp;gt;
+
+{{ content }}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;新建”/User/xx/root/blog_list.html”，用于展示_posts目录下的blog列表&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+---
+layout: default
+title: Blog
+---
+&amp;lt;ul&amp;gt;
+  {% for post in site.posts %}
+    &amp;lt;li&amp;gt;
+      &amp;lt;h2&amp;gt;&amp;lt;a href=&quot;{{ post.url }}&quot;&amp;gt;{{ post.title }}&amp;lt;/a&amp;gt;&amp;lt;/h2&amp;gt;
+    &amp;lt;/li&amp;gt;
+  {% endfor %}
+&amp;lt;/ul&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;发布将_site目录下的内容拷贝到github的usernamegithubio目录下即可完成发布&quot;&gt;发布：将_site目录下的内容拷贝到github的username.github.io目录下即可完成发布&lt;/h4&gt;
+
+&lt;h3 id=&quot;jekyllthemes快速搭建&quot;&gt;jekyllthemes快速搭建&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;可以在http://jekyllthemes.org/ ，选择一个现成的jekyllthemes完成快速搭建&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;选择themes模板&lt;a href=&quot;http://jekyllthemes.org/themes/jekyll-theme-next/&quot;&gt;NexT&lt;/a&gt;，并下载zip&lt;/li&gt;
+  &lt;li&gt;解压后获得jekyll-theme-next-master目录&lt;/li&gt;
+  &lt;li&gt;cd jekyll-theme-next-master，执行”bundle”下载相关gem依赖&lt;/li&gt;
+  &lt;li&gt;根据&lt;a href=&quot;http://theme-next.simpleyyt.com/getting-started.html&quot;&gt;使用教程&lt;/a&gt;修改jekyll-theme-next-master/_config.yml完成页面基础设置，如：页面组件布局，主题，头像，分类目录等&lt;/li&gt;
+  &lt;li&gt;将blog文件放置在_posts目录下&lt;/li&gt;
+  &lt;li&gt;cd jekyll-theme-next-master，执行”bundle exec jekyll serve –trace”，生成_site目录&lt;/li&gt;
+  &lt;li&gt;将_site目录下的内容拷贝到listen2code.github.io的localpath，并同步到github&lt;/li&gt;
+  &lt;li&gt;访问https://listen2code.github.io&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>listen</name></author><summary type="html">初始化Github Pages</summary></entry><entry><title type="html">Next Theme Tutorial</title><link href="http://localhost:4000/tutorial/2015/12/25/next-tutorial/" rel="alternate" type="text/html" title="Next Theme Tutorial" /><published>2015-12-25T00:00:00+08:00</published><updated>2015-12-25T00:00:00+08:00</updated><id>http://localhost:4000/tutorial/2015/12/25/next-tutorial</id><content type="html" xml:base="http://localhost:4000/tutorial/2015/12/25/next-tutorial/">&lt;blockquote&gt;
   &lt;p&gt;NexT is a high quality elegant &lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt; theme ported from &lt;a href=&quot;https://github.com/iissnan/hexo-theme-next&quot;&gt;Hexo Next&lt;/a&gt;. It is crafted from scratch, with love.&lt;/p&gt;
 &lt;/blockquote&gt;
 
@@ -4715,92 +4996,4 @@ Next use &lt;code class=&quot;highlighter-rouge&quot;&gt;normal&lt;/code&gt; by 
 
 &lt;h2 id=&quot;browser-support&quot;&gt;Browser support&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;http://iissnan.com/nexus/next/browser-support.png&quot; alt=&quot;Browser support&quot; /&gt;&lt;/p&gt;</content><author><name>listen</name></author><summary type="html">NexT is a high quality elegant Jekyll theme ported from Hexo Next. It is crafted from scratch, with love. Live Preview Screenshots Desktop Sidebar Sidebar (Post details page) Mobile Installation Check whether you have Ruby 2.1.0 or higher installed: ruby --version Install Bundler: gem install bundler Clone Jacman theme: git clone https://github.com/Simpleyyt/jekyll-theme-next.git cd jekyll-theme-next Install Jekyll and other dependencies from the GitHub Pages gem: bundle install Run your Jekyll site locally: bundle exec jekyll server More Details：Setting up your GitHub Pages site locally with Jekyll Features Multiple languages support, including: English / Russian / French / German / Simplified Chinese / Traditional Chinese. Default language is English. language: en # language: zh-Hans # language: fr-FR # language: zh-hk # language: zh-tw # language: ru # language: de Set language field as following in site _config.yml to change to Chinese. language: zh-Hans Comment support. NexT has native support for DuoShuo and Disqus comment systems. Add the following snippets to your _config.yml: duoshuo: enable: true shortname: your-duoshuo-shortname OR disqus_shortname: your-disqus-shortname Social Media NexT can automatically add links to your Social Media accounts: social: GitHub: your-github-url Twitter: your-twitter-url Weibo: your-weibo-url DouBan: your-douban-url ZhiHu: your-zhihu-url Feed link. Show a feed link. Set rss field in theme’s _config.yml, as the following value: rss: false will totally disable feed link. rss: use sites’ feed link. This is the default option. Follow the installation instruction in the plugin’s README. After the configuration is done for this plugin, the feed link is ready too. rss: http://your-feed-url set specific feed link. Up to 5 code highlight themes built-in. NexT uses Tomorrow Theme with 5 themes for you to choose from. Next use normal by default. Have a preview about normal and night: Head over to Tomorrow Theme for more details. Configuration NexT comes with few configurations. # Menu configuration. menu: home: / archives: /archives # Favicon favicon: /favicon.ico # Avatar (put the image into next/source/images/) # can be any image format supported by web browsers (JPEG,PNG,GIF,SVG,..) avatar: /default_avatar.png # Code highlight theme # available: normal | night | night eighties | night blue | night bright highlight_theme: normal # Fancybox for image gallery fancybox: true # Specify the date when the site was setup since: 2013 Browser support</summary></entry><entry><title type="html">MathJax with Jekyll</title><link href="http://localhost:4000/opinion/2015/12/24/Mathjax-with-jekyll/" rel="alternate" type="text/html" title="MathJax with Jekyll" /><published>2015-12-24T00:00:00+08:00</published><updated>2015-12-24T00:00:00+08:00</updated><id>http://localhost:4000/opinion/2015/12/24/Mathjax-with-jekyll</id><content type="html" xml:base="http://localhost:4000/opinion/2015/12/24/Mathjax-with-jekyll/">&lt;p&gt;One of the rewards of switching my website to &lt;a href=&quot;http://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; is the
-ability to support &lt;strong&gt;MathJax&lt;/strong&gt;, which means I can write LaTeX-like equations that get
-nicely displayed in a web browser, like this one \( \sqrt{\frac{n!}{k!(n-k)!}} \) or
-this one \( x^2 + y^2 = r^2 \).&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;&lt;img class=&quot;centered&quot; src=&quot;https://www.mathjax.org/badge/mj-logo.svg&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;whats-mathjax&quot;&gt;What’s MathJax?&lt;/h3&gt;
-
-&lt;p&gt;If you check MathJax website &lt;a href=&quot;http://www.mathjax.org/&quot;&gt;(www.mathjax.org)&lt;/a&gt; you’ll see
-that it &lt;em&gt;is an open source JavaScript display engine for mathematics that works in all
-browsers&lt;/em&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;how-to-implement-mathjax-with-jekyll&quot;&gt;How to implement MathJax with Jekyll&lt;/h3&gt;
-
-&lt;p&gt;I followed the instructions described by Dason Kurkiewicz for
-&lt;a href=&quot;http://dasonk.github.io/blog/2012/10/09/Using-Jekyll-and-Mathjax/&quot;&gt;using Jekyll and Mathjax&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Here are some important details. I had to modify the Ruby library for Markdown in
-my &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt; file. Now I’m using redcarpet so the corresponding line in the
-configuration file is: &lt;code class=&quot;highlighter-rouge&quot;&gt;markdown: redcarpet&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;To load the MathJax javascript, I added the following lines in my layout &lt;code class=&quot;highlighter-rouge&quot;&gt;post.html&lt;/code&gt;
-(located in my folder &lt;code class=&quot;highlighter-rouge&quot;&gt;_layouts&lt;/code&gt;)&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Of course you can choose a different file location in your jekyll layouts.&lt;/p&gt;
-
-&lt;p&gt;Note that by default, the &lt;strong&gt;tex2jax&lt;/strong&gt; preprocessor defines the
-LaTeX math delimiters, which are &lt;code class=&quot;highlighter-rouge&quot;&gt;\\(...\\)&lt;/code&gt; for in-line math, and &lt;code class=&quot;highlighter-rouge&quot;&gt;\\[...\\]&lt;/code&gt; for
-displayed equations. It also defines the TeX delimiters &lt;code class=&quot;highlighter-rouge&quot;&gt;$$...$$&lt;/code&gt; for displayed
-equations, but it does not define &lt;code class=&quot;highlighter-rouge&quot;&gt;$...$&lt;/code&gt; as in-line math delimiters. To enable in-line math delimiter with &lt;code class=&quot;highlighter-rouge&quot;&gt;$...$&lt;/code&gt;, please use the following configuration:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/x-mathjax-config&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MathJax.Hub.Config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tex2jax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inlineMath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'$'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'$'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\\('&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\\)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;processEscapes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;h3 id=&quot;a-couple-of-examples&quot;&gt;A Couple of Examples&lt;/h3&gt;
-
-&lt;p&gt;Here’s a short list of examples. To know more about the details behind MathJax, you can
-always checked the provided documentation available at
-&lt;a href=&quot;http://docs.mathjax.org/en/latest/&quot;&gt;http://docs.mathjax.org/en/latest/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Let’s try a first example. Here’s a dummy equation:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;a^2 + b^2 = c^2&lt;/script&gt;
-
-&lt;p&gt;How do you write such expression? Very simple: using &lt;strong&gt;double dollar&lt;/strong&gt; signs&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;o&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$$&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;To display inline math use &lt;code class=&quot;highlighter-rouge&quot;&gt;\\( ... \\)&lt;/code&gt; like this &lt;code class=&quot;highlighter-rouge&quot;&gt;\\( sin(x^2) \\)&lt;/code&gt; which gets
-rendered as \( sin(x^2) \)&lt;/p&gt;
-
-&lt;p&gt;Here’s another example using type &lt;code class=&quot;highlighter-rouge&quot;&gt;\mathsf&lt;/code&gt;&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;o&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathsf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PCs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathsf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Loadings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$$&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;which gets displayed as&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathsf{Data = PCs} \times \mathsf{Loadings}&lt;/script&gt;
-
-&lt;p&gt;Or even better:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;err&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathbf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathbf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathbf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathsf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;is displayed as&lt;/p&gt;
-
-&lt;p&gt;\[ \mathbf{X} = \mathbf{Z} \mathbf{P^\mathsf{T}} \]&lt;/p&gt;
-
-&lt;p&gt;If you want to use subscripts like this \( \mathbf{X}_{n,p} \) you need to scape the
-underscores with a backslash like so &lt;code class=&quot;highlighter-rouge&quot;&gt;\mathbf{X}\_{n,p}&lt;/code&gt;:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;o&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathbf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathbf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathbf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$$&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;will be displayed as&lt;/p&gt;
-
-&lt;p&gt;\[ \mathbf{X}_{n,p} = \mathbf{A}_{n,k} \mathbf{B}_{k,p} \]&lt;/p&gt;</content><author><name>listen</name></author><category term="resources" /><category term="jekyll" /><summary type="html">One of the rewards of switching my website to Jekyll is the ability to support MathJax, which means I can write LaTeX-like equations that get nicely displayed in a web browser, like this one \( \sqrt{\frac{n!}{k!(n-k)!}} \) or this one \( x^2 + y^2 = r^2 \).</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://gastonsanchez.com/images/blog/mathjax_logo.png" /></entry></feed>
+&lt;p&gt;&lt;img src=&quot;http://iissnan.com/nexus/next/browser-support.png&quot; alt=&quot;Browser support&quot; /&gt;&lt;/p&gt;</content><author><name>listen</name></author><summary type="html">NexT is a high quality elegant Jekyll theme ported from Hexo Next. It is crafted from scratch, with love. Live Preview Screenshots Desktop Sidebar Sidebar (Post details page) Mobile Installation Check whether you have Ruby 2.1.0 or higher installed: ruby --version Install Bundler: gem install bundler Clone Jacman theme: git clone https://github.com/Simpleyyt/jekyll-theme-next.git cd jekyll-theme-next Install Jekyll and other dependencies from the GitHub Pages gem: bundle install Run your Jekyll site locally: bundle exec jekyll server More Details：Setting up your GitHub Pages site locally with Jekyll Features Multiple languages support, including: English / Russian / French / German / Simplified Chinese / Traditional Chinese. Default language is English. language: en # language: zh-Hans # language: fr-FR # language: zh-hk # language: zh-tw # language: ru # language: de Set language field as following in site _config.yml to change to Chinese. language: zh-Hans Comment support. NexT has native support for DuoShuo and Disqus comment systems. Add the following snippets to your _config.yml: duoshuo: enable: true shortname: your-duoshuo-shortname OR disqus_shortname: your-disqus-shortname Social Media NexT can automatically add links to your Social Media accounts: social: GitHub: your-github-url Twitter: your-twitter-url Weibo: your-weibo-url DouBan: your-douban-url ZhiHu: your-zhihu-url Feed link. Show a feed link. Set rss field in theme’s _config.yml, as the following value: rss: false will totally disable feed link. rss: use sites’ feed link. This is the default option. Follow the installation instruction in the plugin’s README. After the configuration is done for this plugin, the feed link is ready too. rss: http://your-feed-url set specific feed link. Up to 5 code highlight themes built-in. NexT uses Tomorrow Theme with 5 themes for you to choose from. Next use normal by default. Have a preview about normal and night: Head over to Tomorrow Theme for more details. Configuration NexT comes with few configurations. # Menu configuration. menu: home: / archives: /archives # Favicon favicon: /favicon.ico # Avatar (put the image into next/source/images/) # can be any image format supported by web browsers (JPEG,PNG,GIF,SVG,..) avatar: /default_avatar.png # Code highlight theme # available: normal | night | night eighties | night blue | night bright highlight_theme: normal # Fancybox for image gallery fancybox: true # Specify the date when the site was setup since: 2013 Browser support</summary></entry></feed>
