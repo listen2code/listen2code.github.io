@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-09-09T21:26:32+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">listen’s blog</title><subtitle>a programmer’s tech world</subtitle><author><name>listen</name></author><entry><title type="html">从客户端的角度设计后端的接口</title><link href="http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l/" rel="alternate" type="text/html" title="从客户端的角度设计后端的接口" /><published>2019-08-10T00:00:00+08:00</published><updated>2019-08-10T00:00:00+08:00</updated><id>http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l</id><content type="html" xml:base="http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l/">&lt;h4 id=&quot;前言&quot;&gt;前言&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-09-09T22:14:05+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">listen’s blog</title><subtitle>a programmer’s tech world</subtitle><author><name>listen</name></author><entry><title type="html">从客户端的角度设计后端的接口</title><link href="http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l/" rel="alternate" type="text/html" title="从客户端的角度设计后端的接口" /><published>2019-08-10T00:00:00+08:00</published><updated>2019-08-10T00:00:00+08:00</updated><id>http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l</id><content type="html" xml:base="http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l/">&lt;h4 id=&quot;前言&quot;&gt;前言&lt;/h4&gt;
 &lt;blockquote&gt;
   &lt;p&gt;兵马未动，粮草先行。在一款APP产品的各个版本迭代中，兵马的启动指的是真正开始敲代码的时候，粮草先行则是指前期的需求，交互，UI等评审准备阶段，还有本文要说的接口的设计与评审。虽然很多时候一个api接口的业务，数据逻辑是后端提供的，但真正使用这个接口的是客户端，一个前端功能的实现流程与逻辑，有时候只有客户端的RD才清楚，从某种意义来说，客户端算是接口的需求方。所以建议在前期接口设计和评审时，客户端的RD应该更多的思考和参与，什么时机调什么接口？每个接口需要哪些字段？数据含义怎么给？只有这些都考虑清楚，且达成一致并产出接口文档后，当项目真正启动时，根据接口协议进行开发，才能尽量避免各种不确定因素对项目整体进度的影响。本文介绍了接口设计中常见的规范，以及个人的一些思考与总结，水平有限，权当是抛砖引玉，如果有更好的设计，请在文章下方留言告诉我，谢谢。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -4553,7 +4553,7 @@ http://gold.xitu.io/entry/57e48e7ba22b9d006139c60b&lt;/p&gt;</content><author><n
 &lt;p&gt;&lt;img src=&quot;https://github.com/listen2code/article/blob/master/Github%20Pages+Jekyll%20%E6%90%AD%E5%BB%BA%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/screenshot/step_1_1.png?raw=true&quot; alt=&quot;step_1_1&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;给这个repository创建默认的index.html，就是首页
+  &lt;li&gt;给这个repository创建默认的index.html
     &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// clone
 git clone https://github.com/listen2code/listen2code.github.io.git
 // create index.html
@@ -4569,7 +4569,7 @@ git push -u origin master
 &lt;/ul&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;以上步骤参考&lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages搭建&lt;/a&gt;。站点初步已经搭建好了，接下来就要改造index.html，使其可以展示首页，博客分类等常见博客页面组件，这里需要使用Jekyll静态网页生成工具，也是Github Pages官方推荐的。&lt;/p&gt;
+  &lt;p&gt;以上步骤参考&lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages搭建&lt;/a&gt;，站点初步已经搭建好了，接下来就要改造index.html，使其可以展示首页，分类等常见博客页面组件，这里需要使用Github Pages官方推荐Jekyll静态网页生成工具。&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h3 id=&quot;step-by-step-to-jekyll&quot;&gt;Step by Step to &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;&lt;/h3&gt;
@@ -4766,7 +4766,7 @@ title: Home
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h4 id=&quot;_posts目录存放blog文件的目录&quot;&gt;_posts目录：存放blog文件的目录，&lt;/h4&gt;
+&lt;h4 id=&quot;_posts目录存放blog文件的目录&quot;&gt;_posts目录：存放blog文件的目录&lt;/h4&gt;
 
 &lt;p&gt;新建”/User/xx/root/_posts/2019-1-1-blog1.html”，
 与_data目录同理，Jekyll将会在/User/xx/root/_site目录下生成”2019/01/01/blog1.html”&lt;/p&gt;
@@ -4813,7 +4813,7 @@ title: Blog
 &lt;h3 id=&quot;jekyllthemes快速搭建&quot;&gt;jekyllthemes快速搭建&lt;/h3&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;可以在http://jekyllthemes.org/ ，选择一个现成的jekyllthemes完成快速搭建&lt;/p&gt;
+  &lt;p&gt;可以在&lt;a href=&quot;http://jekyllthemes.org/&quot;&gt;jekyllthemes&lt;/a&gt;，选择一个现成的jekyllthemes完成快速搭建&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;ul&gt;
