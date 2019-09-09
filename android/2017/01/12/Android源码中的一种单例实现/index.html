@@ -1,0 +1,838 @@
+
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/assets/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/assets/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="单例模式的实现方式有懒汉，饿汉，双重校验锁，枚举，内部类等等，写法就不全部列举了。Android源码中有一个单例辅助类/frameworks/base/core/java/android/util/Singleton.java，可以实现懒汉式单例，写法挺奇特的，虽然是个hide类，不过拷贝出来就可以用了。">
+<meta name="keywords" content="Android, Blog, listen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android源码中的一种单例实现">
+<meta property="og:url" content="http://localhost:4000/android/2017/01/12/Android%E6%BA%90%E7%A0%81%E4%B8%AD%E7%9A%84%E4%B8%80%E7%A7%8D%E5%8D%95%E4%BE%8B%E5%AE%9E%E7%8E%B0/">
+<meta property="og:site_name" content="listen’s blog">
+<meta property="og:description" content="单例模式的实现方式有懒汉，饿汉，双重校验锁，枚举，内部类等等，写法就不全部列举了。Android源码中有一个单例辅助类/frameworks/base/core/java/android/util/Singleton.java，可以实现懒汉式单例，写法挺奇特的，虽然是个hide类，不过拷贝出来就可以用了。">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android源码中的一种单例实现">
+<meta name="twitter:description" content="单例模式的实现方式有懒汉，饿汉，双重校验锁，枚举，内部类等等，写法就不全部列举了。Android源码中有一个单例辅助类/frameworks/base/core/java/android/util/Singleton.java，可以实现懒汉式单例，写法挺奇特的，虽然是个hide类，不过拷贝出来就可以用了。">
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://localhost:4000/"/>
+
+
+
+
+
+  <title>Android源码中的一种单例实现 | listen’s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">listen’s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+<div id="posts" class="posts-expand">
+  
+  
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/android/2017/01/12/Android%E6%BA%90%E7%A0%81%E4%B8%AD%E7%9A%84%E4%B8%80%E7%A7%8D%E5%8D%95%E4%BE%8B%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="listen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/assets/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listen’s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+          
+          
+            Android源码中的一种单例实现
+          
+        </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-12T00:00:00+08:00">
+                2017-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/android" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+            
+                <div class="post-description">
+                    单例模式的实现方式有懒汉，饿汉，双重校验锁，枚举，内部类等等，写法就不全部列举了。Android源码中有一个单例辅助类/frameworks/base/core/java/android/util/Singleton.java，可以实现懒汉式单例，写法挺奇特的，虽然是个hide类，不过拷贝出来就可以用了。
+                </div>
+            
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24</pre></td><td class="code"><pre class="highlight"><code><span class="k">package</span> <span class="n">android</span><span class="p">.</span><span class="n">util</span><span class="p">;</span>
+
+<span class="p">/**</span>
+ <span class="p">*</span> <span class="n">Singleton</span> <span class="n">helper</span> <span class="n">class</span> <span class="n">for</span> <span class="n">lazily</span> <span class="n">initialization</span><span class="p">.</span>
+ <span class="p">*</span>
+ <span class="p">*</span> <span class="n">Modeled</span> <span class="n">after</span> <span class="n">frameworks</span><span class="p">/</span><span class="n">base</span><span class="p">/</span><span class="k">include</span><span class="p">/</span><span class="n">utils</span><span class="p">/</span><span class="n">Singleton</span><span class="p">.</span><span class="n">h</span>
+ <span class="p">*</span>
+ <span class="p">*</span> <span class="p">@</span><span class="n">hide</span>
+ <span class="p">*/</span>
+<span class="k">public</span> <span class="n">abstract</span> <span class="n">class</span> <span class="n">Singleton</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">{</span>
+    <span class="n">private</span> <span class="n">T</span> <span class="n">mInstance</span><span class="p">;</span>
+
+    <span class="n">protected</span> <span class="n">abstract</span> <span class="n">T</span> <span class="nb">create</span><span class="p">();</span>
+
+    <span class="k">public</span> <span class="n">final</span> <span class="n">T</span> <span class="n">get</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">synchronized</span> <span class="p">(</span><span class="n">this</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">mInstance</span> <span class="p">==</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">mInstance</span> <span class="p">=</span> <span class="nb">create</span><span class="p">();</span>
+            <span class="p">}</span>
+            <span class="n">return</span> <span class="n">mInstance</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span> 
+    
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>正常懒汉单例</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12</pre></td><td class="code"><pre class="highlight"><code>public class SingletonDemo {
+    private static SingletonDemo mInstance;
+
+    public static final SingletonDemo get() {
+        synchronized (SingletonDemo.class) {
+            if (mInstance == null) {
+                mInstance = new SingletonDemo();
+            }
+            return mInstance;
+        }
+    }
+} 
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>懒汉+双重校验单例</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14</pre></td><td class="code"><pre class="highlight"><code>public class SingletonDemo {
+    private static SingletonDemo mInstance;
+
+    public static final SingletonDemo get() {
+        if (mInstance == null) {
+            synchronized (SingletonDemo.class) {
+                if (mInstance == null) {
+                    mInstance = new SingletonDemo();
+                }
+            }
+        }
+        return mInstance;
+    }
+} 
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>变种懒汉单例</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12</pre></td><td class="code"><pre class="highlight"><code>public class SingletonDemo {
+
+    public static final SingletonDemo get() {
+        return INSTANCE.get();
+    }
+
+    private static final Singleton&lt;SingletonDemo&gt; INSTANCE = new Singleton&lt;SingletonDemo&gt;() {
+        protected SingletonDemo create() {
+            return new SingletonDemo();
+        }
+    };
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>懒汉式单例一般都会再加个双重校验的判断，避免每次调用get()都加锁，影响性能，Android源码中Singleton.java工具类并没有做双重校验（看了下googlesource中的<a href="https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/util/Singleton.java">Singleton.java</a>，也是6年前提交的代码了），所以我们在将Singleton.java拷贝出来使用的时候可以加个双重校验优化下。Singleton.java封装了create，get模版，及get中的校验逻辑，从而SingletonDemo中的实现代码就可以更加的简单：1.create()一个单例对象，2.在需要的时候get()。</p>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+      
+      
+
+      
+      
+        <div class="post-nav" id="post-nav-id">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/android/2017/02/05/6.0%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9D%83%E9%99%90%E7%9A%84%E6%80%BB%E7%BB%93%E4%B8%8E%E5%AE%9E%E8%B7%B5/" rel="next" title="6.0运行时权限的总结与实践">
+                <i class="fa fa-chevron-left"></i> 6.0运行时权限的总结与实践
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/android/2016/12/03/MVC-MVP-MVPVM-%E4%BA%8C-%E6%8F%90%E5%8D%87%E6%95%88%E7%8E%87%E4%B9%8BTemplates/" rel="prev" title="MVC，MVP，MVPVM（二）提升效率之Templates">
+                MVC，MVP，MVPVM（二）提升效率之Templates <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+
+      
+    </footer>
+  </article>
+
+  <div class="post-spread">
+    
+  </div>
+</div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        
+        
+        
+
+
+
+
+
+
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/images/avatar.jpeg"
+               alt="listen" />
+          <p class="site-author-name" itemprop="name">listen</p>
+           
+              <p class="site-description motion-element" itemprop="description">a programmer’s tech world</p>
+          
+        </div>
+        <!-- <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav> -->
+
+        
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listen</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+    
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+

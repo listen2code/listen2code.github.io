@@ -1,0 +1,1252 @@
+
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/assets/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/assets/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="通过Android Studio的Memory Monitor工具，对各种数据类型，如：boolean，int，float，long，SparseArray，HashMap等在内存的占用情况进行分析。对一些特定场景下的代码编写，如：String拼接，OnClickListener等所消耗的内存情况进行分析。通过分析，更好的了解了不同情况下堆内存是如何分配的，也确切验证了以往诸多的代码经验，为高效合理的利用内存奠定基础。">
+<meta name="keywords" content="Android, Blog, listen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="性能优化（一）堆内存分析">
+<meta property="og:url" content="http://localhost:4000/android/2018/04/07/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E4%B8%80-%E5%A0%86%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90/">
+<meta property="og:site_name" content="listen’s blog">
+<meta property="og:description" content="通过Android Studio的Memory Monitor工具，对各种数据类型，如：boolean，int，float，long，SparseArray，HashMap等在内存的占用情况进行分析。对一些特定场景下的代码编写，如：String拼接，OnClickListener等所消耗的内存情况进行分析。通过分析，更好的了解了不同情况下堆内存是如何分配的，也确切验证了以往诸多的代码经验，为高效合理的利用内存奠定基础。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/堆内存分析.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="性能优化（一）堆内存分析">
+<meta name="twitter:description" content="通过Android Studio的Memory Monitor工具，对各种数据类型，如：boolean，int，float，long，SparseArray，HashMap等在内存的占用情况进行分析。对一些特定场景下的代码编写，如：String拼接，OnClickListener等所消耗的内存情况进行分析。通过分析，更好的了解了不同情况下堆内存是如何分配的，也确切验证了以往诸多的代码经验，为高效合理的利用内存奠定基础。">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/堆内存分析.jpg">
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://localhost:4000/"/>
+
+
+
+
+
+  <title>性能优化（一）堆内存分析 | listen’s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">listen’s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+<div id="posts" class="posts-expand">
+  
+  
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/android/2018/04/07/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E4%B8%80-%E5%A0%86%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="listen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/assets/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listen’s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+          
+          
+            性能优化（一）堆内存分析
+          
+        </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-07T00:00:00+08:00">
+                2018-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/android" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+            
+                <div class="post-description">
+                    通过Android Studio的Memory Monitor工具，对各种数据类型，如：boolean，int，float，long，SparseArray，HashMap等在内存的占用情况进行分析。对一些特定场景下的代码编写，如：String拼接，OnClickListener等所消耗的内存情况进行分析。通过分析，更好的了解了不同情况下堆内存是如何分配的，也确切验证了以往诸多的代码经验，为高效合理的利用内存奠定基础。
+                </div>
+            
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/堆内存分析.jpg" rel="gallery_"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/堆内存分析.jpg" itemprop="contentUrl"/>
+              </a>
+            
+          
+
+          
+          
+          </div>
+        </div>
+      
+
+      
+        
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <h3 id="memory-monitor的基本使用">Memory Monitor的基本使用</h3>
+
+<ul>
+  <li>新建MainActivity，启动APP
+    <div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.activity_main);
+  }
+}
+</code></pre></td></tr></tbody></table></div>    </div>
+  </li>
+  <li>
+    <p>在 Android Monitor -&gt; Monitors -&gt; Memory 中，点击”initiate GC”，先手动GC一次，把没用的内存进行回收。
+<img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/step1_gc.png" alt="step1_gc.png" /></p>
+  </li>
+  <li>点击”Dump Java Heap”，生成.hprof（hprof文件为特定时间点，Java进程的内存快照）
+<img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/step2_dump.png" alt="step2_dump.png" /></li>
+</ul>
+
+<p>以下是根据.hprof文件生成的内存分析表，本文主要关注Shallow Size和Retained Size，其他column含义可以参考<a href="https://developer.android.com/studio/profile/am-hprof.html#hprof-analyzing">官方-HPROF Viewer and Analyzer</a>
+<img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/heap_nothing.png" alt="heap_nothing.png" /></p>
+
+<h3 id="shallow-size和retained-size">Shallow Size和Retained Size</h3>
+<blockquote>
+  <p>Shallow Size：对象自身占用的内存大小，不包括它引用的对象
+Retained Size：对象自身占用的内存大小，加上它直接或间接引用的对象大小
+Dominating Size：管辖的内存大小，大部分情况和Retained一致</p>
+</blockquote>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/shalow_and_retain.png" alt="shalow_and_retain.png" /></p>
+
+<p>因为可以通过GC Roots直接访问，所以左图的obj3不是蓝色节点；而右图却是蓝色，因为它已经被包含在 Retained size 中。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Shallow Size</th>
+      <th>Retained Size（左）</th>
+      <th>Retained Size（右）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>obj1</td>
+      <td>obj1</td>
+      <td>obj1+obj2+obj4</td>
+      <td>obj1+obj2+obj3+obj4</td>
+    </tr>
+    <tr>
+      <td>obj2</td>
+      <td>obj2</td>
+      <td>obj2+obj4</td>
+      <td>obj2+obj3+obj4</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="案例分析">案例分析</h3>
+<blockquote>
+  <p>如图<a href="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/heap_nothing.png">heap_nothing.png</a>，在MainActivity在新建的时候，初始占用内存1776（以下案例分析基于红米note3机型）。</p>
+</blockquote>
+
+<ul>
+  <li>case 1：空对象TestModel+未初始化。</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7</pre></td><td class="code"><pre class="highlight"><code>public class TestModel {
+}
+
+public class MainActivity extends AppCompatActivity {
+    private TestModel mModel;
+    ...onCreate()
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case1_TestModel.png" alt="case1_TestModel.png" /></p>
+
+<blockquote>
+  <p>只定义TestModel成员变量的情况下，内存占用1780=初始内存+引用类型（4）。所以在项目发版前，要把一些没有使用到的变量都清理一遍，积少成多，免得造成内存浪费。</p>
+</blockquote>
+
+<ul>
+  <li>case 2：空对象TestModel+初始化。</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+    private TestModel mModel = new TestModel();
+    ...onCreate()
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case2_TestModel.png" alt="case2_TestModel.png" /></p>
+
+<blockquote>
+  <p>内存占用1788=case1+类信息（8），说明调用new时，即使是空对象，也需要8字节左右的堆空间用于描述该对象的类信息。基于Java是在new的时候才去申请堆空间的特性，在开发中，可以考虑对象的延迟初始化，养成个好习惯，在使用到的时候才去new。</p>
+</blockquote>
+
+<ul>
+  <li>case3：TestModel以局部变量的方式进行定义。</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        TestModel mModel = new TestModel();
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case3_TestModel.png" alt="case3_TestModel.png" /></p>
+
+<blockquote>
+  <p>内存占用未变化，还是初始值1776，说明局部变量生命周期只存在于方法内部，方法结束后，即可被gc回收。除非必须，能使用局部变量的情况，就避免定义成员变量。</p>
+</blockquote>
+
+<ul>
+  <li>case4：boolean基础类型。</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+   private boolean mBoolean;
+    ...onCreate()
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case4_boolean.png" alt="case4_boolean.png" /></p>
+
+<blockquote>
+  <p>内存占用1777=初始状态+1，说明基础类型boolean的引用类型占用1字节。</p>
+</blockquote>
+
+<ul>
+  <li>case5：Boolean封装类型。</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+   private Boolean mBoolean;
+    ...onCreate()
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case5_Boolean.png" alt="case5_Boolean.png" /></p>
+
+<blockquote>
+  <p>内存占用1780=初始状态+4，装箱类型Boolean本质上也是一个对象，由case1可以推导出引用类型占用4字节。</p>
+</blockquote>
+
+<ul>
+  <li>case6：Boolean封装类型+初始化。</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+   private Boolean mBoolean = new Boolean(true);
+    ...onCreate()
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case6_Boolean.png" alt="case6_Boolean.png" /></p>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/Boolean_source.png" alt="Boolean_source.png" /></p>
+
+<blockquote>
+  <p>内存占用1789=case5+9，如图，Boolean的源码中有个boolean基础类型的字段value，当调用”new Boolean(true)”的时候，根据case2可以推导，类描述信息8字节，根据case4可以推导，value基础类型占用1字节，所以总共增加9字节。</p>
+</blockquote>
+
+<p>同理，可以推导出以下表格：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>boolean/byte</th>
+      <th>short/char</th>
+      <th>int/float/String/引用类型/数组引用</th>
+      <th>long/double/类信息</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>内存占用</td>
+      <td>1</td>
+      <td>2</td>
+      <td>4</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>case7：TestModel内部类。</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+    private TestModel mModel = new TestModel();
+    ...onCreate()
+    public class TestModel {
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case7_TestModel.png" alt="case7_TestModel.png" /></p>
+
+<blockquote>
+  <p>占用内存1792=case1（1780）+类信息（8）+this引用（4）。</p>
+</blockquote>
+
+<ul>
+  <li>case8：TestModel静态内部类。</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+    private TestModel mModel = new TestModel();
+    ...onCreate()
+    public static class TestModel {
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case8_TestModel.png" alt="case8_TestModel.png" /></p>
+
+<blockquote>
+  <p>占用内存1788=case1（1780）+类信息（8），静态内部类由于没有外部类的匿名this引用，少占用4字节。</p>
+</blockquote>
+
+<ul>
+  <li>case9：HashMap和SparseArray的对比。</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+    private Map&lt;Integer, Integer&gt; mMap = new HashMap&lt;&gt;();
+    private SparseArray&lt;Integer&gt; mSparseArray = new SparseArray();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        for (int i = 0; i &lt; 1000; i++) {
+            mMap.put(i, i);
+            mSparseArray.put(i, i);
+        }
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://github.com/listen2code/article/blob/master/性能优化（一）堆内存分析/screenshot/case9_map.png?raw=true" alt="case9_map.png" /></p>
+
+<blockquote>
+  <p>各添加1000条数据，HashMap占用53168，SparseArray占用18653，说明使用SparseArray替代HashMap更节省内存。</p>
+</blockquote>
+
+<ul>
+  <li>case10：OnClickListener三种写法的对比。从节省内存的角度考虑，通过方式3接口回调设置OnClickListener为最优。</li>
+</ul>
+
+<p>写法1：匿名类</p>
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+    private Button mButton;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mButton = (Button) findViewById(R.id.button);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "hello", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case10_1_listener.png" alt="case10_1_listener.png" /></p>
+
+<blockquote>
+  <p>内存占用=MainActivity（1780）+MainActivity$1（12）=1792。</p>
+</blockquote>
+
+<p>写法2：成员变量类</p>
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+    private Button mButton;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mButton = (Button) findViewById(R.id.button);
+        mButton.setOnClickListener(mOnClickListener);
+    }
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(MainActivity.this, "hello", Toast.LENGTH_SHORT).show();
+        }
+    };
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case10_2_listener.png" alt="case10_2_listener.png" /></p>
+
+<blockquote>
+  <p>内存占用=MainActivity（1784，包含4字节的成员变量）+MainActivity$1（12）=1796。</p>
+</blockquote>
+
+<p>写法3：接口回调</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private Button mButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        mButton = (Button) findViewById(R.id.button);
+        mButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(MainActivity.this, "hello", Toast.LENGTH_SHORT).show();
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case10_3_listener.png" alt="case10_3_listener.png" /></p>
+
+<blockquote>
+  <p>内存占用=1780（减少1个成员变量，避免通过new创建新的对象，内存占用最少）。</p>
+</blockquote>
+
+<ul>
+  <li>case11：String的初始化。</li>
+</ul>
+
+<p>case11_1：</p>
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+   private String mStr = "aaaaa";
+    ...onCreate()
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case11_1_String.png" alt="case11_1_String.png" /></p>
+
+<p>case11_2：</p>
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+   private String mStr = new String("aaaaa");
+    ...onCreate()
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case11_2_String.png" alt="case11_2_String.png" /></p>
+
+<blockquote>
+
+  <ul>
+    <li>“aaaaa”这个String为何占用26字节？按以上方式分析，至少占用内存30=类信息（8）+count（4）+hashCode（4）+char[]引用（4）+char[]数组（10），为何少了4字节？</li>
+    <li>直接赋值的方式会将”aaaaa”加入到字符串常量池，不占用堆空间；而case11_2的内存占用为 1806=case11_1+26，说明通过new String方式创建的字符串会在堆内存开辟空间。</li>
+  </ul>
+</blockquote>
+
+<ul>
+  <li>case12：String的拼接。</li>
+</ul>
+
+<p>case12_1：基于case11_1，作字符串”+”拼接。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+   private String mStr = "aaaaa";
+   protected void onCreate(Bundle savedInstanceState) {
+       ...
+      mStr += "c";
+   }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case12_1_String.png" alt="case12_1_String.png" /></p>
+
+<blockquote>
+  <p>可以发现，拼接后内存占用1808=case11_1（1780）+28，而这28的空间正好是”aaaaac”的内存大小，也就是说在”+”拼接的时候，产生了一个临时的变量用于存储”aaaaac”的结果，并赋值给mStr。印证了《Effective in Java》的第51条中所说”由于字符串不可变，当2个字符串被连接在一起时，他们的内容都要被拷贝”。同时在<a href="http://www.jianshu.com/p/160c9be0b132">浅谈StringBuilder</a>这篇文章中也讲到了”+”拼接的时候，会转化为StringBuilder，再通过toString创建一个新的String对象。</p>
+</blockquote>
+
+<p>case12_2：用StringBuilder进行字符串拼接。</p>
+
+<p>case12_2_1：初始化1个空的StringBuilder</p>
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+  private StringBuilder mStringBuilder = new StringBuilder();
+    ...onCreate()
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case12_2_1_StringBuilder.png" alt="case12_2_1_StringBuilder.png" /></p>
+
+<blockquote>
+  <p>一个空的StringBuilder就占49字节，类信息（8）+count（4）+shared（1）+value引用（4）+value[]数组（32）=49。value这个字符数组占用了32字节，而我们最多也就添加”aaaaac”6个字符，所以这里可以通过new StringBuilder(6)初始化字符数组的大小，避免浪费。</p>
+</blockquote>
+
+<p>case12_2_2：使用StringBuilder进行”aaaaa”+”c”的字符串拼接。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+    private StringBuilder mStringBuilder = new StringBuilder(6);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        ...
+        mStringBuilder.append("aaaaa");
+        mStringBuilder.append("c");
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p><img src="https://raw.githubusercontent.com/listen2code/article/master/性能优化（一）堆内存分析/screenshot/case12_2_2_StringBuilder.png" alt="case12_2_2_StringBuilder.png" /></p>
+
+<blockquote>
+  <p>首先在StringBuilder初始化的时候设置了字符数组大小为6，所以StringBuilder的初始内存占用就变小了，而在完成append(“aaaaa”)，append(“c”)之后，只要当前字符数组的容量够用，就不会继续扩容，避免了String拼接时，内存浪费的问题。当然前提是控制好StringBuilder的char[]初始容量，不然扩容后也会空余一些闲置内存。</p>
+</blockquote>
+
+<p>###总结</p>
+<blockquote>
+
+  <p>1.谨慎创建成员变量：不管有用没用，非基础类型的成员变量只要定义了，至少需要4字节，基础类型成员变量占用大小各不一样。尽量使用局部变量，缩短变量生命周期，促使GC更快回收。
+2.谨慎new：如case2的TestModel，不管该对象是否为空，至少8字节的类信息占用。如case10的Listener，尽量避免不必要的new。考虑对象的延迟初始化，只有真正使用的时候才new。
+3.除非必要，否则尽量使用基础类型，避免使用装箱类型。
+4.少用内部类：内部类如果不需要访问到外部类的成员时，可以抽取成独立外部类，或加static，减少一个this引用（4字节），也可以避免内存泄漏。
+5.使用google推荐的数据集合类型SparseArray，ArrayMap替代HashMap。
+6.从节省内存的角度考虑，通过接口回调的方式设置OnClickListener为最优。
+7.通过StringBuilder替代String进行字符串拼接，最好预先设置好StringBuilder的容量。</p>
+</blockquote>
+
+<h3 id="参考">参考</h3>
+<p><a href="https://developer.android.com/studio/profile/am-hprof.html#hprof-analyzing">官方-HPROF Viewer and Analyzer</a></p>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+      
+      
+
+      
+      
+        <div class="post-nav" id="post-nav-id">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/android/2018/07/10/%E9%AB%98%E4%BB%BF%E8%98%91%E8%8F%87%E8%A1%97%E6%AC%A2%E8%BF%8E%E9%A1%B5/" rel="next" title="高仿蘑菇街欢迎页">
+                <i class="fa fa-chevron-left"></i> 高仿蘑菇街欢迎页
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/android/2017/02/05/6.0%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9D%83%E9%99%90%E7%9A%84%E6%80%BB%E7%BB%93%E4%B8%8E%E5%AE%9E%E8%B7%B5/" rel="prev" title="6.0运行时权限的总结与实践">
+                6.0运行时权限的总结与实践 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+
+      
+    </footer>
+  </article>
+
+  <div class="post-spread">
+    
+  </div>
+</div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        
+        
+        
+
+
+
+
+
+
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/images/avatar.jpeg"
+               alt="listen" />
+          <p class="site-author-name" itemprop="name">listen</p>
+           
+              <p class="site-description motion-element" itemprop="description">a programmer’s tech world</p>
+          
+        </div>
+        <!-- <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav> -->
+
+        
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+
+
+
+
+
+
+
+            
+              <div class="post-toc-content">
+    <ol class=nav>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#memory-monitor的基本使用"> <span class="nav-number">1</span> <span class="nav-text">Memory Monitor的基本使用</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#shallow-size和retained-size"> <span class="nav-number">2</span> <span class="nav-text">Shallow Size和Retained Size</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#案例分析"> <span class="nav-number">3</span> <span class="nav-text">案例分析</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#参考"> <span class="nav-number">4</span> <span class="nav-text">参考</span> </a> </li>
+    </ol>
+  </div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listen</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+    
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+

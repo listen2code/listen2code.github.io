@@ -1,0 +1,1497 @@
+
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/assets/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/assets/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="DataBinding整体使用流程">
+<meta name="keywords" content="Android, Blog, listen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DataBinding学习笔记（一）源码分析">
+<meta property="og:url" content="http://localhost:4000/android/2016/11/27/DataBinding%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%80-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+<meta property="og:site_name" content="listen’s blog">
+<meta property="og:description" content="DataBinding整体使用流程">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/listen2code/article/blob/master/DataBinding学习笔记（一）源码分析/screenshot/整体流程图.png?raw=true">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DataBinding学习笔记（一）源码分析">
+<meta name="twitter:description" content="DataBinding整体使用流程">
+<meta name="twitter:image" content="https://github.com/listen2code/article/blob/master/DataBinding学习笔记（一）源码分析/screenshot/整体流程图.png?raw=true">
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://localhost:4000/"/>
+
+
+
+
+
+  <title>DataBinding学习笔记（一）源码分析 | listen’s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">listen’s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+<div id="posts" class="posts-expand">
+  
+  
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/android/2016/11/27/DataBinding%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%B8%80-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="listen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/assets/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listen’s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+          
+          
+            DataBinding学习笔记（一）源码分析
+          
+        </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-27T00:00:00+08:00">
+                2016-11-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/android" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+            
+                <div class="post-description">
+                    DataBinding整体使用流程
+                </div>
+            
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="https://github.com/listen2code/article/blob/master/DataBinding学习笔记（一）源码分析/screenshot/整体流程图.png?raw=true" rel="gallery_"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="https://github.com/listen2code/article/blob/master/DataBinding学习笔记（一）源码分析/screenshot/整体流程图.png?raw=true" itemprop="contentUrl"/>
+              </a>
+            
+          
+
+          
+          
+          </div>
+        </div>
+      
+
+      
+        
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <p>###开发阶段
+#####UserModel.java</p>
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15</pre></td><td class="code"><pre class="highlight"><code>public class UserModel {
+    public String name;
+    public String nickName;
+    public int age;
+
+    public UserModel(String name, String nickName, int age) {
+        this.name = name;
+        this.age = age;
+        this.nickName = nickName;
+    }
+
+    public boolean isAge18() {
+        return age &gt;= 18;
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>#####activity_main.xml</p>
+<blockquote>
+  <p>在xml中使用”@{}”标识符</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38</pre></td><td class="code"><pre class="highlight"><code>&lt;layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"&gt;
+    &lt;data&gt;
+        &lt;variable name="user" type="com.listen.test_databinding.UserModel"/&gt;
+        &lt;variable name="testClick" type="android.view.View.OnClickListener"/&gt;
+        &lt;import type="android.view.View"/&gt;
+    &lt;/data&gt;
+
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.listen.test_databinding.MainActivity"&gt;
+
+        &lt;TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{"名字" + user.name}'/&gt;
+
+        &lt;TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{user.nickName}'
+            android:visibility="@{null == user.nickName ? View.VISIBLE : View.GONE}"/&gt;
+
+        &lt;TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{user.isAge18() ? "man" : "boy"}'/&gt;
+
+        &lt;Button
+            android:id="@+id/btn_test"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:onClick="@{testClick}" android:text="测试"/&gt;
+    &lt;/LinearLayout&gt;
+&lt;/layout&gt;
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>#####MainActivity.java</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19</pre></td><td class="code"><pre class="highlight"><code>public class MainActivity extends AppCompatActivity {
+
+    private ActivityMainBinding mBinding;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        final UserModel user = new UserModel("listen", "ls", 18);
+        mBinding.setUser(user);
+        mBinding.setTestClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "testClick", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>###编译阶段</p>
+
+<p>####1.Databinding会自动解析识别xml中的”@{}”标识符，并在以下目录生成2个xml文件</p>
+
+<blockquote>
+  <p>1.build/intermediates/data-binding-layout-out/activity_main.xml
+2.build/intermediates/data-binding-info/debug/activity_main-layout.xml</p>
+</blockquote>
+
+<p>######activity_main.xml</p>
+<blockquote>
+  <p>带“@{}”的xml文件是android系统无法识别的，为了向后兼容，需要在编译期统一转换成系统能识别的标准xml布局，而原先在布局中添加的”@{}”，”@{三目运算符}”等信息，则会存储在activity_main-layout.xml中。</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31</pre></td><td class="code"><pre class="highlight"><code>&lt;LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"    
+    android:orientation="vertical"
+    android:tag="layout/activity_main_0"
+    tools:context="com.listen.test_databinding.MainActivity"&gt;
+
+    &lt;TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="binding_1"/&gt;
+
+    &lt;TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="binding_2"
+    /&gt;
+
+    &lt;TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="binding_3"/&gt;
+
+    &lt;Button
+        android:id="@+id/btn_test"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:tag="binding_4" android:text="测试"/&gt;
+&lt;/LinearLayout&gt;
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>######activity_main-layout.xml（xml描述文件）</p>
+<blockquote>
+  <p>1.任何view只要用到了”@{}”标识，就会在activity_main-layout.xml中生成target描述，并根据该view在parent中的位置生成”binding_[index]”标识，并设置在tag中。
+2.如果一个view即没有设置”android:id”，也没有使用”@{}”标识，则不会在activity_main-layout.xml中生成这个view的target描述。
+3.LinearLayout比较特殊，并没有设置”android:id”，也没有使用”@{}”，但还是会生成一个默认的tag=”layout/activity_main_0”，表示它是根布局，在ViewDataBinding.java实例化时，需要判断根布局的tag，后面源码会分析到。</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48<br/>49<br/>50<br/>51<br/>52<br/>53</pre></td><td class="code"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="utf-8" standalone="yes"?&gt;</span>
+<span class="nt">&lt;Layout</span> <span class="na">absoluteFilePath=</span><span class="s">"/Users/lisong/Documents/AndroidStudioWorkSpace/Test_Databinding/app/src/main/res/layout/activity_main.xml"</span> <span class="na">directory=</span><span class="s">"layout"</span>
+        <span class="na">isMerge=</span><span class="s">"false"</span>
+        <span class="na">layout=</span><span class="s">"activity_main"</span> <span class="na">modulePackage=</span><span class="s">"com.listen.test_databinding"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;Variables</span> <span class="na">name=</span><span class="s">"user"</span> <span class="na">declared=</span><span class="s">"true"</span> <span class="na">type=</span><span class="s">"com.listen.test_databinding.UserModel"</span><span class="nt">&gt;</span>
+        ...
+    <span class="nt">&lt;/Variables&gt;</span>
+    <span class="nt">&lt;Variables</span> <span class="na">name=</span><span class="s">"testClick"</span> <span class="na">declared=</span><span class="s">"true"</span> <span class="na">type=</span><span class="s">"android.view.View.OnClickListener"</span><span class="nt">&gt;</span>
+        ...
+    <span class="nt">&lt;/Variables&gt;</span>
+    <span class="nt">&lt;Imports</span> <span class="na">name=</span><span class="s">"View"</span> <span class="na">type=</span><span class="s">"android.view.View"</span><span class="nt">&gt;</span>
+        ...
+    <span class="nt">&lt;/Imports&gt;</span>
+    <span class="nt">&lt;Targets&gt;</span>
+        <span class="nt">&lt;Target</span> <span class="na">tag=</span><span class="s">"layout/activity_main_0"</span> <span class="na">view=</span><span class="s">"LinearLayout"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;Expressions/&gt;</span>
+            ...
+        <span class="nt">&lt;/Target&gt;</span>
+        <span class="nt">&lt;Target</span> <span class="na">tag=</span><span class="s">"binding_1"</span> <span class="na">view=</span><span class="s">"TextView"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;Expressions&gt;</span>
+                <span class="nt">&lt;Expression</span> <span class="na">attribute=</span><span class="s">"android:text"</span> <span class="na">text=</span><span class="s">""</span><span class="err">名字"</span> <span class="err">+</span> <span class="err">user.name"</span><span class="nt">&gt;</span>
+                    ...
+                <span class="nt">&lt;/Expression&gt;</span>
+            <span class="nt">&lt;/Expressions&gt;</span>
+        <span class="nt">&lt;/Target&gt;</span>
+        <span class="nt">&lt;Target</span> <span class="na">tag=</span><span class="s">"binding_2"</span> <span class="na">view=</span><span class="s">"TextView"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;Expressions&gt;</span>
+                <span class="nt">&lt;Expression</span> <span class="na">attribute=</span><span class="s">"android:text"</span> <span class="na">text=</span><span class="s">"user.nickName"</span><span class="nt">&gt;</span>
+                    ...
+                <span class="nt">&lt;/Expression&gt;</span>
+                <span class="nt">&lt;Expression</span> <span class="na">attribute=</span><span class="s">"android:visibility"</span>
+                            <span class="na">text=</span><span class="s">"null == user.nickName ? View.VISIBLE : View.GONE"</span><span class="nt">&gt;</span>
+                    ...
+                <span class="nt">&lt;/Expression&gt;</span>
+            <span class="nt">&lt;/Expressions&gt;</span>
+        <span class="nt">&lt;/Target&gt;</span>
+        <span class="nt">&lt;Target</span> <span class="na">tag=</span><span class="s">"binding_3"</span> <span class="na">view=</span><span class="s">"TextView"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;Expressions&gt;</span>
+                <span class="nt">&lt;Expression</span> <span class="na">attribute=</span><span class="s">"android:text"</span>
+                            <span class="na">text=</span><span class="s">"user.isAge18() ? "</span><span class="err">man"</span> <span class="err">:</span> <span class="err">"boy""</span><span class="nt">&gt;</span>
+                    ...
+                <span class="nt">&lt;/Expression&gt;</span>
+            <span class="nt">&lt;/Expressions&gt;</span>
+        <span class="nt">&lt;/Target&gt;</span>
+        <span class="nt">&lt;Target</span> <span class="na">id=</span><span class="s">"@+id/btn_test"</span> <span class="na">tag=</span><span class="s">"binding_4"</span> <span class="na">view=</span><span class="s">"Button"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;Expressions&gt;</span>
+                <span class="nt">&lt;Expression</span> <span class="na">attribute=</span><span class="s">"android:onClick"</span> <span class="na">text=</span><span class="s">"testClick"</span><span class="nt">&gt;</span>
+                    ...
+                <span class="nt">&lt;/Expression&gt;</span>
+            <span class="nt">&lt;/Expressions&gt;</span>
+        <span class="nt">&lt;/Target&gt;</span>
+    <span class="nt">&lt;/Targets&gt;</span>
+<span class="nt">&lt;/Layout&gt;</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>####2.生成ActivityMainBinding.java和BR.java</p>
+<blockquote>
+  <p>DataBinding根据解析后的activity_main-layout.xml，和layout下的activity_main.xml文件，生成build/intermediates/classes/debug/[项目路径]/databinding/
+ActivityMainBinding.java和BR.java</p>
+</blockquote>
+
+<p><img src="https://github.com/listen2code/article/blob/master/DataBinding学习笔记（一）源码分析/screenshot/ActivityMainBinding目录.png?raw=true" alt="ActivityMainBinding目录.png" /></p>
+
+<p>######ActivityMainBinding主要具备以下功能</p>
+<blockquote>
+  <p>1.作为view和model的连接器，持有需要展示的数据和views的成员变量
+2.将数据映射到view（就是setText，setOnClick等）
+3.在UI线程更新数据</p>
+</blockquote>
+
+<p>######BR.java就是一个常量类</p>
+<blockquote>
+  <p>可以通过binding.setVariable(BRuser, new User())进行数据更新</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8</pre></td><td class="code"><pre class="highlight"><code>public class BR {
+    public static final int _all = 0;
+    public static final int testClick = 1;
+    public static final int user = 2;
+
+    public BR() {
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11</pre></td><td class="code"><pre class="highlight"><code>public boolean setVariable(int variableId, Object variable) {
+    switch(variableId) {
+        case BR.testClick :
+            setTestClick((android.view.View.OnClickListener) variable);
+            return true;
+        case BR.user :
+            setUser((com.listen.test_databinding.UserModel) variable);
+            return true;
+    }
+    return false;
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>###运行阶段</p>
+<blockquote>
+  <p>Databinding框架最主要做的事，就是以上2步，接下来就是在代码中调用生成的ViewDataBinding，并进行数据绑定操作。</p>
+</blockquote>
+
+<p>######DataBindingUtil是一切的入口</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>ActivityMainBinding mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+</code></pre></td></tr></tbody></table></div></div>
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6</pre></td><td class="code"><pre class="highlight"><code>public static &lt;T extends ViewDataBinding&gt; T setContentView(Activity activity, int layoutId, DataBindingComponent bindingComponent) {
+    activity.setContentView(layoutId);// 最终调用的还是activity.setContentView()，不过这里的layoutId是已经去掉"@{}"的标准xml布局
+    View decorView = activity.getWindow().getDecorView();
+    ViewGroup contentView = (ViewGroup) decorView.findViewById(android.R.id.content);//获取根顶级容器view
+    return bindToAddedViews(bindingComponent, contentView, 0, layoutId);
+}
+</code></pre></td></tr></tbody></table></div></div>
+<p>######取出布局的rootView，调用ActivityMainBinding.bind()</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27</pre></td><td class="code"><pre class="highlight"><code>private static &lt;T extends ViewDataBinding&gt; T bindToAddedViews(android.databinding.DataBindingComponent component, ViewGroup parent, int startChildren, int layoutId) {
+    final int endChildren = parent.getChildCount();
+    final int childrenAdded = endChildren - startChildren;
+    if (childrenAdded == 1) {
+        // 从顶级容器view中获取当前布局的rootView，调用bind方法
+        final View childView = parent.getChildAt(endChildren - 1);
+        return bind(component, childView, layoutId);
+    } else {
+        ...
+    }
+}
+
+static &lt;T extends ViewDataBinding&gt; T bind(DataBindingComponent bindingComponent, View root,
+                                          int layoutId) {
+    // sMapper = DataBinderMapper.java
+    return (T) sMapper.getDataBinder(bindingComponent, root, layoutId);
+}
+
+/**  DataBinderMapper.java */
+public android.databinding.ViewDataBinding getDataBinder(android.databinding.DataBindingComponent bindingComponent, android.view.View view, int layoutId) {
+    switch(layoutId) {
+        case com.listen.test_databinding.R.layout.activity_main:
+            // 将rootView传递给ActivityMainBinding.bind()
+            return com.listen.test_databinding.databinding.ActivityMainBinding.bind(view, bindingComponent);
+    }
+    return null;
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>此处做了rootView的判断，如果传递过来的不是当前ViewDataBinding绑定的布局，则抛异常。所以即使rootView没有设置id，及”@{}”，在info-layout.xml中也会生成相应的target描述。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7</pre></td><td class="code"><pre class="highlight"><code>public static ActivityMainBinding bind(View view, DataBindingComponent bindingComponent) {
+    if(!"layout/activity_main_0".equals(view.getTag())) {
+        throw new RuntimeException("view tag isn</div></div>
+
+<p>这里需要特别注意的是在编译期自动生成的activity_main.xml文件中自动添加了tag=”binding_1”，”binding_2”等，其实在初始化完这些view后，都已经清空，是不影响我们在代码中设置tag的；不过rootView并没有清除tag（就是xml布局最外层的layout），如果&gt;=14以上版本，在代码里设置setTag(R.id.databinding,”anything”)，或，&lt;14版本，在代码里设置setTag(“anything”)，则会报错，so，这个tag是由DataBinding占着的，使用上得小心。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33</pre></td><td class="code"><pre class="highlight"><code>public ActivityMainBinding(android.databinding.DataBindingComponent bindingComponent, View root) {
+    super(bindingComponent, root, 0);
+    // 遍历布局，找到所有views，并存储在bindings[]中，5表示布局一共有5个view，sIncludes存储被include进     // 来的布局，sViewsWithIds存储设置了"android:id"，但是没有用到"@{}"的view
+    Object[] bindings = mapBindings(bindingComponent, root, 5, sIncludes, sViewsWithIds);
+
+    // 将bindings[]中的view取出，赋值给当前各个view的成员变量，并清除tag，避免冲突
+    this.btnTest = (Button)bindings[4];
+    this.btnTest.setTag((Object)null);
+    this.mboundView0 = (LinearLayout)bindings[0];
+    this.mboundView0.setTag((Object)null);
+    this.mboundView1 = (TextView)bindings[1];
+    this.mboundView1.setTag((Object)null);
+    this.mboundView2 = (TextView)bindings[2];
+    this.mboundView2.setTag((Object)null);
+    this.mboundView3 = (TextView)bindings[3];
+    this.mboundView3.setTag((Object)null);
+    this.setRootTag(root);
+    /**
+    ViewDatabBinding.java
+    protected void setRootTag(View view) {
+        //private static final boolean USE_TAG_ID = DataBinderMapper.TARGET_MIN_SDK &gt;= 14;
+        if (USE_TAG_ID) {
+        view.setTag(R.id.dataBinding, this);
+        } else {
+        view.setTag(this);
+        }
+    }
+    */
+
+    
+    // 请求刷新，实现数据与view的绑定
+    this.invalidateAll();
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>mapBindings()，其实就是递归遍历view树的过程，不过不是byId，而是byTag，寻找以”binding_“开头的view，并取出”binding_[索引]”中的索引，赋值给binding[]数组。所有的view只在一次遍历中获得，而如果是用findViewById的方式，每次调用都需要遍历一次view树[性能对比]。需要特别注意的是binding数组的元素不一定都是view或viewGroup，如果有include布局的时候binding数组存储的可能是include布局的viewDataBinding对象。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48<br/>49<br/>50<br/>51<br/>52<br/>53<br/>54<br/>55<br/>56<br/>57<br/>58<br/>59<br/>60<br/>61<br/>62<br/>63<br/>64<br/>65<br/>66<br/>67<br/>68<br/>69<br/>70<br/>71<br/>72<br/>73<br/>74<br/>75<br/>76<br/>77</pre></td><td class="code"><pre class="highlight"><code>private static void mapBindings(DataBindingComponent bindingComponent, View view, Object[] bindings, ViewDataBinding.IncludedLayouts includes, SparseIntArray viewsWithIds, boolean isRoot) {
+    ViewDataBinding existingBinding = getBinding(view);
+    if(existingBinding == null) {
+        Object objTag = view.getTag();
+        String tag = objTag instanceof String?(String)objTag:null;
+        
+        if(isRoot &amp;&amp; tag != null &amp;&amp; tag.startsWith("layout")) {
+            // 如果是rootView，则从"layout/activity_main_0"中取出索引"0"，设置到bindings[0]中
+            viewGroup = tag.lastIndexOf(95);
+            count = parseTagInt(tag, viewGroup + 1);
+            if(bindings[count] == null) {
+                bindings[count] = view;
+            }
+            ...
+        } else if(tag != null &amp;&amp; tag.startsWith("binding_")) {
+            // 同样判断tag，取出"binding_1"，"bingding_2"中的索引，赋值到bindings[]中
+            viewGroup = parseTagInt(tag, BINDING_NUMBER_START);
+            if(bindings[viewGroup] == null) {
+                bindings[viewGroup] = view;
+            }
+            ...
+        }
+        
+        // isBound=false，说明当前的view既不是根布局，也没有用到"@{}"（如果有用到就会生成"binding_"
+        // 的tag）；则通过id获取该view，并设置到bingding[]
+        // 如果存在设置了id，但是没有“@{}”的view会被添加到sViewsWithIds中，如果
+        // "binding_[index]"的index最大为3，则view的起始index设置为4。
+        // static {
+        //    sIncludes = null;
+        //    sViewsWithIds = new android.util.SparseIntArray();
+        //    sViewsWithIds.put(R.id.btn_test, 4);
+        //}
+        if(!isBound) {
+            viewGroup = view.getId();
+            if(viewGroup &gt; 0 &amp;&amp; viewsWithIds != null &amp;&amp; (count = viewsWithIds.get(viewGroup, -1)) &gt;= 0 &amp;&amp; bindings[count] == null) {
+                bindings[count] = view;
+            }
+        }
+
+        if(view instanceof ViewGroup) {
+            // 如果是view是个viewGroup，则遍历子view
+            ViewGroup var25 = (ViewGroup)view;
+            count = var25.getChildCount();
+            ...
+
+            for(int i = 0; i &lt; count; ++i) {
+                View child = var25.getChildAt(i);
+                boolean isInclude = false;
+                if(indexInIncludes &gt;= 0 &amp;&amp; child.getTag() instanceof String) {
+                    String childTag = (String)child.getTag();
+                    if(childTag.endsWith("_0") &amp;&amp; childTag.startsWith("layout") &amp;&amp; childTag.indexOf(47) &gt; 0) {
+                        // 如果当前view也是一个rootView，则判断tag中是否有include标识信息
+                        // 如果包含include标签，生成的info-layout文件应该是以下样式：
+                        // &lt;Target include="include_main" tag="layout/activity_main_0"&gt;
+                        // &lt;/Target&gt;
+                        int includeIndex = findIncludeIndex(childTag, minInclude, includes, indexInIncludes);
+                        if(includeIndex &gt;= 0) {
+                            isInclude = true;
+                            ...
+                            // 如果包含include信息，则重新调用DataBindingUtil.bind()生成ViewDataBinding，重复当前流程，
+                            // 不过当前的bindings[index]就不是一个view，而是一个viewDataBinding
+                            bindings[index] = DataBindingUtil.bind(bindingComponent, child, layoutId);
+                            ...
+                        }
+                    }
+                }
+
+                if(!isInclude) {
+                    // 如果只是一个viewGroup，不是include进来的布局，则重新调用mapBindings，只是isRoot=false，则会上面进入"binding_"的判断逻辑
+                    mapBindings(bindingComponent, child, bindings, includes, viewsWithIds, false);
+                }
+            }
+        }
+
+    }
+}
+
+</code></pre></td></tr></tbody></table></div></div>
+<p>#####view遍历流程图
+<img src="https://github.com/listen2code/article/blob/master/DataBinding学习笔记（一）源码分析/screenshot/view遍历流程.png?raw=true" alt="view遍历流程.png" /></p>
+
+<p>View都找到了，现在该是时候设置listener，data的时候了。这时候会通过invalidateAll()请求数据更新，层层调用后，还是回到了ActivityMainBinding的executeBindings()，在这个方法里将更新后的model数据，onclick等重新设置到Textview，Button上，完成了model-&gt;view的单向绑定。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48<br/>49<br/>50<br/>51<br/>52<br/>53<br/>54<br/>55<br/>56<br/>57<br/>58<br/>59<br/>60<br/>61<br/>62<br/>63<br/>64<br/>65<br/>66<br/>67<br/>68<br/>69<br/>70<br/>71<br/>72</pre></td><td class="code"><pre class="highlight"><code>
+// 子类：xxxViewDataBinding extends ViewDataBinding
+public void invalidateAll() {
+    synchronized(this) {
+        this.mDirtyFlags = 4L;
+    }
+
+    this.requestRebind();
+}
+
+// 父类：ViewDataBinding.java
+// 通过handler.post()执行mRebindRunnable
+protected void requestRebind() {
+    ...
+    mUIThreadHandler.post(mRebindRunnable);
+}
+
+// mRebindRunnable调用了executePendingBindings()
+private final Runnable mRebindRunnable = new Runnable() {
+    @Override
+    public void run() {
+        ...
+        executePendingBindings();
+    }
+};
+
+// executePendingBindings调用了executeBindings()
+public void executePendingBindings() {
+    ...
+    executeBindings();
+    ...
+}
+
+// 子类：xxxViewDataBinding extends ViewDataBinding
+protected void executeBindings() {
+    ...
+    // 当调用ViewDataBinding.setUser(new User())时，就是给成员变量mUser赋值，在这里获取this.mUser
+    UserModel user = this.mUser;
+
+    if((dirtyFlags &amp; 6L) != 0L) {
+        // 获取并构建数据，所以model中的字段要么为public，要么提供一个getter方法，不然这里无法获取
+        // 可以看到，在xml中的@{}表达式，此时已经解析成对应的方法isAge18，user.name等
+        if(user != null) {
+            userIsAge18User = user.isAge18();
+            nameUser = user.name;
+            nickNameUser = user.nickName;
+        }
+
+        ...
+        // 获取并构建数据
+        userIsAge18UserStrin = userIsAge18User?"man":"boy";
+        stringNameUser = "名字" + nameUser;
+        ObjectnullNickNameUs1 = null == nickNameUser;
+        ...
+
+        objectnullNickNameUs = ObjectnullNickNameUs1?0:8;
+    }
+
+    // 设置listener
+    if((dirtyFlags &amp; 5L) != 0L) {
+        this.btnTest.setOnClickListener(testClick);
+    }
+
+    // 通过TextViewBindingAdapter将数据设置到TextView上
+    if((dirtyFlags &amp; 6L) != 0L) {
+        TextViewBindingAdapter.setText(this.mboundView1, stringNameUser);
+        TextViewBindingAdapter.setText(this.mboundView2, nickNameUser);
+        this.mboundView2.setVisibility(objectnullNickNameUs);
+        TextViewBindingAdapter.setText(this.mboundView3, userIsAge18UserStrin);
+    }
+
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>######以上便是当我们通过DataBindingUtil.setContentView()对Databinding进行初始化，以及当我们获取到最新数据，通过Binding.setModel进行数据更新时的操作流程。
+<img src="https://github.com/listen2code/article/blob/master/DataBinding学习笔记（一）源码分析/screenshot/数据绑定流程.png?raw=true" alt="数据绑定流程.png" /></p>
+
+<p>###参考</p>
+
+<p>英文官方文档
+https://developer.android.com/topic/libraries/data-binding/index.html</p>
+
+<p>Google开发团队介绍DataDinding使用
+https://realm.io/cn/news/data-binding-android-boyar-mount/?utm_source=tuicool&amp;utm_medium=referral</p>
+
+<p>QQ音乐团队分享，比较贴近源码的介绍
+http://gold.xitu.io/entry/57e48e7ba22b9d006139c60b</p>
+t correct on view:" + view.getTag());
+    } else {
+        return new ActivityMainBinding(bindingComponent, view); // ActivityMainBinding在此处初始化
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>这里需要特别注意的是在编译期自动生成的activity_main.xml文件中自动添加了tag=”binding_1”，”binding_2”等，其实在初始化完这些view后，都已经清空，是不影响我们在代码中设置tag的；不过rootView并没有清除tag（就是xml布局最外层的layout），如果&gt;=14以上版本，在代码里设置setTag(R.id.databinding,”anything”)，或，&lt;14版本，在代码里设置setTag(“anything”)，则会报错，so，这个tag是由DataBinding占着的，使用上得小心。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33</pre></td><td class="code"><pre class="highlight"><code>public ActivityMainBinding(android.databinding.DataBindingComponent bindingComponent, View root) {
+    super(bindingComponent, root, 0);
+    // 遍历布局，找到所有views，并存储在bindings[]中，5表示布局一共有5个view，sIncludes存储被include进     // 来的布局，sViewsWithIds存储设置了"android:id"，但是没有用到"@{}"的view
+    Object[] bindings = mapBindings(bindingComponent, root, 5, sIncludes, sViewsWithIds);
+
+    // 将bindings[]中的view取出，赋值给当前各个view的成员变量，并清除tag，避免冲突
+    this.btnTest = (Button)bindings[4];
+    this.btnTest.setTag((Object)null);
+    this.mboundView0 = (LinearLayout)bindings[0];
+    this.mboundView0.setTag((Object)null);
+    this.mboundView1 = (TextView)bindings[1];
+    this.mboundView1.setTag((Object)null);
+    this.mboundView2 = (TextView)bindings[2];
+    this.mboundView2.setTag((Object)null);
+    this.mboundView3 = (TextView)bindings[3];
+    this.mboundView3.setTag((Object)null);
+    this.setRootTag(root);
+    /**
+    ViewDatabBinding.java
+    protected void setRootTag(View view) {
+        //private static final boolean USE_TAG_ID = DataBinderMapper.TARGET_MIN_SDK &gt;= 14;
+        if (USE_TAG_ID) {
+        view.setTag(R.id.dataBinding, this);
+        } else {
+        view.setTag(this);
+        }
+    }
+    */
+
+    
+    // 请求刷新，实现数据与view的绑定
+    this.invalidateAll();
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>mapBindings()，其实就是递归遍历view树的过程，不过不是byId，而是byTag，寻找以”binding_“开头的view，并取出”binding_[索引]”中的索引，赋值给binding[]数组。所有的view只在一次遍历中获得，而如果是用findViewById的方式，每次调用都需要遍历一次view树[性能对比]。需要特别注意的是binding数组的元素不一定都是view或viewGroup，如果有include布局的时候binding数组存储的可能是include布局的viewDataBinding对象。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48<br/>49<br/>50<br/>51<br/>52<br/>53<br/>54<br/>55<br/>56<br/>57<br/>58<br/>59<br/>60<br/>61<br/>62<br/>63<br/>64<br/>65<br/>66<br/>67<br/>68<br/>69<br/>70<br/>71<br/>72<br/>73<br/>74<br/>75<br/>76<br/>77</pre></td><td class="code"><pre class="highlight"><code>private static void mapBindings(DataBindingComponent bindingComponent, View view, Object[] bindings, ViewDataBinding.IncludedLayouts includes, SparseIntArray viewsWithIds, boolean isRoot) {
+    ViewDataBinding existingBinding = getBinding(view);
+    if(existingBinding == null) {
+        Object objTag = view.getTag();
+        String tag = objTag instanceof String?(String)objTag:null;
+        
+        if(isRoot &amp;&amp; tag != null &amp;&amp; tag.startsWith("layout")) {
+            // 如果是rootView，则从"layout/activity_main_0"中取出索引"0"，设置到bindings[0]中
+            viewGroup = tag.lastIndexOf(95);
+            count = parseTagInt(tag, viewGroup + 1);
+            if(bindings[count] == null) {
+                bindings[count] = view;
+            }
+            ...
+        } else if(tag != null &amp;&amp; tag.startsWith("binding_")) {
+            // 同样判断tag，取出"binding_1"，"bingding_2"中的索引，赋值到bindings[]中
+            viewGroup = parseTagInt(tag, BINDING_NUMBER_START);
+            if(bindings[viewGroup] == null) {
+                bindings[viewGroup] = view;
+            }
+            ...
+        }
+        
+        // isBound=false，说明当前的view既不是根布局，也没有用到"@{}"（如果有用到就会生成"binding_"
+        // 的tag）；则通过id获取该view，并设置到bingding[]
+        // 如果存在设置了id，但是没有“@{}”的view会被添加到sViewsWithIds中，如果
+        // "binding_[index]"的index最大为3，则view的起始index设置为4。
+        // static {
+        //    sIncludes = null;
+        //    sViewsWithIds = new android.util.SparseIntArray();
+        //    sViewsWithIds.put(R.id.btn_test, 4);
+        //}
+        if(!isBound) {
+            viewGroup = view.getId();
+            if(viewGroup &gt; 0 &amp;&amp; viewsWithIds != null &amp;&amp; (count = viewsWithIds.get(viewGroup, -1)) &gt;= 0 &amp;&amp; bindings[count] == null) {
+                bindings[count] = view;
+            }
+        }
+
+        if(view instanceof ViewGroup) {
+            // 如果是view是个viewGroup，则遍历子view
+            ViewGroup var25 = (ViewGroup)view;
+            count = var25.getChildCount();
+            ...
+
+            for(int i = 0; i &lt; count; ++i) {
+                View child = var25.getChildAt(i);
+                boolean isInclude = false;
+                if(indexInIncludes &gt;= 0 &amp;&amp; child.getTag() instanceof String) {
+                    String childTag = (String)child.getTag();
+                    if(childTag.endsWith("_0") &amp;&amp; childTag.startsWith("layout") &amp;&amp; childTag.indexOf(47) &gt; 0) {
+                        // 如果当前view也是一个rootView，则判断tag中是否有include标识信息
+                        // 如果包含include标签，生成的info-layout文件应该是以下样式：
+                        // &lt;Target include="include_main" tag="layout/activity_main_0"&gt;
+                        // &lt;/Target&gt;
+                        int includeIndex = findIncludeIndex(childTag, minInclude, includes, indexInIncludes);
+                        if(includeIndex &gt;= 0) {
+                            isInclude = true;
+                            ...
+                            // 如果包含include信息，则重新调用DataBindingUtil.bind()生成ViewDataBinding，重复当前流程，
+                            // 不过当前的bindings[index]就不是一个view，而是一个viewDataBinding
+                            bindings[index] = DataBindingUtil.bind(bindingComponent, child, layoutId);
+                            ...
+                        }
+                    }
+                }
+
+                if(!isInclude) {
+                    // 如果只是一个viewGroup，不是include进来的布局，则重新调用mapBindings，只是isRoot=false，则会上面进入"binding_"的判断逻辑
+                    mapBindings(bindingComponent, child, bindings, includes, viewsWithIds, false);
+                }
+            }
+        }
+
+    }
+}
+
+</code></pre></td></tr></tbody></table></div></div>
+<p>#####view遍历流程图
+<img src="https://github.com/listen2code/article/blob/master/DataBinding学习笔记（一）源码分析/screenshot/view遍历流程.png?raw=true" alt="view遍历流程.png" /></p>
+
+<p>View都找到了，现在该是时候设置listener，data的时候了。这时候会通过invalidateAll()请求数据更新，层层调用后，还是回到了ActivityMainBinding的executeBindings()，在这个方法里将更新后的model数据，onclick等重新设置到Textview，Button上，完成了model-&gt;view的单向绑定。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48<br/>49<br/>50<br/>51<br/>52<br/>53<br/>54<br/>55<br/>56<br/>57<br/>58<br/>59<br/>60<br/>61<br/>62<br/>63<br/>64<br/>65<br/>66<br/>67<br/>68<br/>69<br/>70<br/>71<br/>72</pre></td><td class="code"><pre class="highlight"><code>
+// 子类：xxxViewDataBinding extends ViewDataBinding
+public void invalidateAll() {
+    synchronized(this) {
+        this.mDirtyFlags = 4L;
+    }
+
+    this.requestRebind();
+}
+
+// 父类：ViewDataBinding.java
+// 通过handler.post()执行mRebindRunnable
+protected void requestRebind() {
+    ...
+    mUIThreadHandler.post(mRebindRunnable);
+}
+
+// mRebindRunnable调用了executePendingBindings()
+private final Runnable mRebindRunnable = new Runnable() {
+    @Override
+    public void run() {
+        ...
+        executePendingBindings();
+    }
+};
+
+// executePendingBindings调用了executeBindings()
+public void executePendingBindings() {
+    ...
+    executeBindings();
+    ...
+}
+
+// 子类：xxxViewDataBinding extends ViewDataBinding
+protected void executeBindings() {
+    ...
+    // 当调用ViewDataBinding.setUser(new User())时，就是给成员变量mUser赋值，在这里获取this.mUser
+    UserModel user = this.mUser;
+
+    if((dirtyFlags &amp; 6L) != 0L) {
+        // 获取并构建数据，所以model中的字段要么为public，要么提供一个getter方法，不然这里无法获取
+        // 可以看到，在xml中的@{}表达式，此时已经解析成对应的方法isAge18，user.name等
+        if(user != null) {
+            userIsAge18User = user.isAge18();
+            nameUser = user.name;
+            nickNameUser = user.nickName;
+        }
+
+        ...
+        // 获取并构建数据
+        userIsAge18UserStrin = userIsAge18User?"man":"boy";
+        stringNameUser = "名字" + nameUser;
+        ObjectnullNickNameUs1 = null == nickNameUser;
+        ...
+
+        objectnullNickNameUs = ObjectnullNickNameUs1?0:8;
+    }
+
+    // 设置listener
+    if((dirtyFlags &amp; 5L) != 0L) {
+        this.btnTest.setOnClickListener(testClick);
+    }
+
+    // 通过TextViewBindingAdapter将数据设置到TextView上
+    if((dirtyFlags &amp; 6L) != 0L) {
+        TextViewBindingAdapter.setText(this.mboundView1, stringNameUser);
+        TextViewBindingAdapter.setText(this.mboundView2, nickNameUser);
+        this.mboundView2.setVisibility(objectnullNickNameUs);
+        TextViewBindingAdapter.setText(this.mboundView3, userIsAge18UserStrin);
+    }
+
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>######以上便是当我们通过DataBindingUtil.setContentView()对Databinding进行初始化，以及当我们获取到最新数据，通过Binding.setModel进行数据更新时的操作流程。
+<img src="https://github.com/listen2code/article/blob/master/DataBinding学习笔记（一）源码分析/screenshot/数据绑定流程.png?raw=true" alt="数据绑定流程.png" /></p>
+
+<p>###参考</p>
+
+<p>英文官方文档
+https://developer.android.com/topic/libraries/data-binding/index.html</p>
+
+<p>Google开发团队介绍DataDinding使用
+https://realm.io/cn/news/data-binding-android-boyar-mount/?utm_source=tuicool&amp;utm_medium=referral</p>
+
+<p>QQ音乐团队分享，比较贴近源码的介绍
+http://gold.xitu.io/entry/57e48e7ba22b9d006139c60b</p>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+      
+      
+
+      
+      
+        <div class="post-nav" id="post-nav-id">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/android/2016/12/01/MVC-MVP-MVPVM-%E4%B8%80-%E5%AE%9E%E8%B7%B5%E4%B9%8B%E8%B7%AF/" rel="next" title="MVC，MVP，MVPVM（一）实践之路">
+                <i class="fa fa-chevron-left"></i> MVC，MVP，MVPVM（一）实践之路
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/tutorial/2015/12/25/next-tutorial/" rel="prev" title="Next Theme Tutorial">
+                Next Theme Tutorial <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+
+      
+    </footer>
+  </article>
+
+  <div class="post-spread">
+    
+  </div>
+</div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        
+        
+        
+
+
+
+
+
+
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/images/avatar.jpeg"
+               alt="listen" />
+          <p class="site-author-name" itemprop="name">listen</p>
+           
+              <p class="site-description motion-element" itemprop="description">a programmer’s tech world</p>
+          
+        </div>
+        <!-- <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav> -->
+
+        
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listen</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+    
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+

@@ -1,0 +1,997 @@
+
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/assets/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/assets/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="《MVC，MVP，MVPVM（一）实践之路》中讲到如何从MVC到MVPVM的转变，将各个模块分离，职责划清。不过有个缺点，就是类爆炸，为什么代码写着写着就MVC了，就是因为一个Activity搞定，写着爽。但是，如果要实现解耦，就一定意味着会有很多不同的职能类。如果采用mvp，或mvpvm的实现方式，每次在新建一个页面就需要差不多10+个文件，虽然逻辑简单，不过全都手动创建的话，是不是觉得还是MVC好。">
+<meta name="keywords" content="Android, Blog, listen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MVC，MVP，MVPVM（二）提升效率之Templates">
+<meta property="og:url" content="http://localhost:4000/android/2016/12/03/MVC-MVP-MVPVM-%E4%BA%8C-%E6%8F%90%E5%8D%87%E6%95%88%E7%8E%87%E4%B9%8BTemplates/">
+<meta property="og:site_name" content="listen’s blog">
+<meta property="og:description" content="《MVC，MVP，MVPVM（一）实践之路》中讲到如何从MVC到MVPVM的转变，将各个模块分离，职责划清。不过有个缺点，就是类爆炸，为什么代码写着写着就MVC了，就是因为一个Activity搞定，写着爽。但是，如果要实现解耦，就一定意味着会有很多不同的职能类。如果采用mvp，或mvpvm的实现方式，每次在新建一个页面就需要差不多10+个文件，虽然逻辑简单，不过全都手动创建的话，是不是觉得还是MVC好。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/screenshot/so%20many%20class.png?raw=true">
+<meta property="og:image" content="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/gif/auto%20create%20classes.gif?raw=true">
+<meta property="og:image" content="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/screenshot/how%20to%20use-2.png?raw=true">
+<meta property="og:image" content="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/screenshot/classes_generate.png?raw=true">
+<meta property="og:image" content="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/screenshot/template_1.png?raw=true">
+<meta property="og:image" content="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/screenshot/template2.png?raw=true">
+<meta property="og:image" content="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/screenshot/how%20to%20use-2.png?raw=true">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MVC，MVP，MVPVM（二）提升效率之Templates">
+<meta name="twitter:description" content="《MVC，MVP，MVPVM（一）实践之路》中讲到如何从MVC到MVPVM的转变，将各个模块分离，职责划清。不过有个缺点，就是类爆炸，为什么代码写着写着就MVC了，就是因为一个Activity搞定，写着爽。但是，如果要实现解耦，就一定意味着会有很多不同的职能类。如果采用mvp，或mvpvm的实现方式，每次在新建一个页面就需要差不多10+个文件，虽然逻辑简单，不过全都手动创建的话，是不是觉得还是MVC好。">
+<meta name="twitter:image" content="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/screenshot/so%20many%20class.png?raw=true">
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://localhost:4000/"/>
+
+
+
+
+
+  <title>MVC，MVP，MVPVM（二）提升效率之Templates | listen’s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">listen’s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+<div id="posts" class="posts-expand">
+  
+  
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/android/2016/12/03/MVC-MVP-MVPVM-%E4%BA%8C-%E6%8F%90%E5%8D%87%E6%95%88%E7%8E%87%E4%B9%8BTemplates/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="listen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/assets/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listen’s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+          
+          
+            MVC，MVP，MVPVM（二）提升效率之Templates
+          
+        </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-03T00:00:00+08:00">
+                2016-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/android" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+            
+                <div class="post-description">
+                    《MVC，MVP，MVPVM（一）实践之路》中讲到如何从MVC到MVPVM的转变，将各个模块分离，职责划清。不过有个缺点，就是类爆炸，为什么代码写着写着就MVC了，就是因为一个Activity搞定，写着爽。但是，如果要实现解耦，就一定意味着会有很多不同的职能类。如果采用mvp，或mvpvm的实现方式，每次在新建一个页面就需要差不多10+个文件，虽然逻辑简单，不过全都手动创建的话，是不是觉得还是MVC好。
+                </div>
+            
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <p><img src="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/screenshot/so%20many%20class.png?raw=true" alt="so many class.png" /></p>
+
+<p>#####解决方案</p>
+<blockquote>
+  <p>套用定义好的代码Templates，自动生成各个职能类。</p>
+</blockquote>
+
+<p><img src="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/gif/auto%20create%20classes.gif?raw=true" alt="mvpvm_templates.gif" /></p>
+
+<p>模版地址：
+https://github.com/listen2code/Test_MVPVM/tree/master/doc/MvpvmComponent</p>
+
+<p>#####使用介绍
+1.将写好的templates拷贝到本地
+Android Studio.app/Contents/plugins/android/lib/templates/activities/
+2.重启AndroidStudio，右键项目-&gt;New-&gt;Activity-&gt;MvpvmComponent
+3.在打开的编辑页面输入ActivityName和layoutName，包名为”com.listen.test_mvpvm”
+<img src="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/screenshot/how%20to%20use-2.png?raw=true" alt="templates_input.png" /></p>
+
+<p>根据Templates自动生成的类
+<img src="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/screenshot/classes_generate.png?raw=true" alt="classes_generate.png" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30</pre></td><td class="code"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="nt">&lt;layout</span> <span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span>
+        <span class="na">xmlns:tools=</span><span class="s">"http://schemas.android.com/tools"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;data&gt;</span>
+        <span class="nt">&lt;variable</span> <span class="na">name=</span><span class="s">"data"</span> <span class="na">type=</span><span class="s">"com.listen.test_mvpvm.model.viewmodel.ITestMvpvmViewModel"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;variable</span> <span class="na">name=</span><span class="s">"presenter"</span> <span class="na">type=</span><span class="s">"com.listen.test_mvpvm.presenter.ITestMvpvmPresenter"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/data&gt;</span>
+
+    <span class="nt">&lt;LinearLayout</span>
+        <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+        <span class="na">android:layout_height=</span><span class="s">"match_parent"</span>
+        <span class="na">android:orientation=</span><span class="s">"vertical"</span><span class="nt">&gt;</span>
+
+        <span class="nt">&lt;TextView</span>
+            <span class="na">android:id=</span><span class="s">"@+id/tv_test"</span>
+            <span class="na">android:layout_width=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_centerInParent=</span><span class="s">"true"</span>
+            <span class="na">android:text=</span><span class="s">"@{data.text}"</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;Button</span>
+            <span class="na">android:id=</span><span class="s">"@+id/btn_test"</span>
+            <span class="na">android:layout_width=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_below=</span><span class="s">"@id/tv_test"</span>
+            <span class="na">android:onClick=</span><span class="s">"@{presenter.onClickAction}"</span>
+            <span class="na">android:text=</span><span class="s">"@{data.buttonText}"</span><span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;/LinearLayout&gt;</span>
+<span class="nt">&lt;/layout&gt;</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16</pre></td><td class="code"><pre class="highlight"><code>public class TestMvpvmActivity extends AppCompatActivity implements ITestMvpvmView {
+
+    private ActivityTestMvpvmBinding mBinding;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_test_mvpvm);
+        mBinding.setPresenter(new TestMvpvmPresenter(this));
+    }
+
+    @Override
+    public void updateView(ITestMvpvmViewModel viewModel) {
+        mBinding.setData(viewModel);
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21</pre></td><td class="code"><pre class="highlight"><code>public class TestMvpvmPresenter implements OnTestMvpvmListener, ITestMvpvmPresenter {
+
+    private ITestMvpvmView mITestMvpvmView;
+    private ITestMvpvmRepository mTestMvpvmRepository;
+
+    public TestMvpvmPresenter(ITestMvpvmView iTestMvpvmView) {
+        this.mITestMvpvmView = iTestMvpvmView;
+        this.mTestMvpvmRepository = new TestMvpvmRepositoryImpl(this);
+    }
+
+    public void onClickAction(View v) {
+        mTestMvpvmRepository.method("");
+    }
+
+    public void onTestMvpvmLoadSuccess(TestMvpvmModel data) {
+        mITestMvpvmView.updateView(new TestMvpvmViewModel(data));
+    }
+
+    public void onTestMvpvmLoadFail(String errorMessage) {
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17</pre></td><td class="code"><pre class="highlight"><code>public class TestMvpvmRepositoryImpl implements ITestMvpvmRepository {
+
+    private OnTestMvpvmListener mOnTestMvpvmListener;
+
+    public TestMvpvmRepositoryImpl(OnTestMvpvmListener onTestMvpvmListener) {
+        this.mOnTestMvpvmListener = onTestMvpvmListener;
+    }
+
+    public void method(String param) {
+        new HttpTask() {
+            @Override
+            public void onRequestSuccess(TestMvpvmModel model) {
+                mOnTestMvpvmListener.onTestMvpvmLoadSuccess(model);
+            }
+        }.path("http://xxxx/getMydeposit").execute();
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>#####Templates介绍
+Templates由3个xml描述文件，和一堆.flt文件组成。</p>
+
+<p><img src="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/screenshot/template_1.png?raw=true" alt="template_1.png" />
+<img src="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/screenshot/template2.png?raw=true" alt="template2.png" /></p>
+
+<p>globals.xml.ftl：主要用于定义一些全局变量，正常如果要自定义模版的话，globals文件可以直接拷贝过去，不需要什么改动。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9</pre></td><td class="code"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<span class="nt">&lt;globals&gt;</span>
+    <span class="nt">&lt;global</span> <span class="na">id=</span><span class="s">"hasNoActionBar"</span> <span class="na">type=</span><span class="s">"boolean"</span> <span class="na">value=</span><span class="s">"false"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;global</span> <span class="na">id=</span><span class="s">"parentActivityClass"</span> <span class="na">value=</span><span class="s">""</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;global</span> <span class="na">id=</span><span class="s">"excludeMenu"</span> <span class="na">type=</span><span class="s">"boolean"</span> <span class="na">value=</span><span class="s">"true"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;global</span> <span class="na">id=</span><span class="s">"generateActivityTitle"</span> <span class="na">type=</span><span class="s">"boolean"</span> <span class="na">value=</span><span class="s">"false"</span> <span class="nt">/&gt;</span>
+    <span class="err">&lt;</span>#include "../common/common_globals.xml.ftl" /&gt;
+<span class="nt">&lt;/globals&gt;</span>
+
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>template.xml：我们在新建模版时，会有个填写信息的页面，template文件主要用于描述该页面上的元素信息。
+<img src="https://github.com/listen2code/article/blob/master/MVC，MVP，MVPVM（二）提升效率之Templates/screenshot/how%20to%20use-2.png?raw=true" alt="templates_input.png" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48<br/>49</pre></td><td class="code"><pre class="highlight"><code>&lt;template
+    format="5"
+    revision="8"
+    name="MvpvmComponent"
+    minApi="7"
+    minBuildApi="14"
+    description="Creates mvpvm components"&gt;
+
+    &lt;category value="Activity" /&gt;
+    &lt;formfactor value="Mobile" /&gt;
+
+    &lt;!-- 上图中第一个"Component Name"输入框的描述 --&gt;
+    &lt;parameter
+        id="activityClass"// 唯一性ID，后面会在.flt中引用
+        name="Component Name"// 输入框前的描述提示语
+        type="string"// 输入值类型
+        constraints="class|unique|nonempty"
+        suggest="${layoutToActivity(activityLayoutName)}"// 输入约束
+        default="Mvpvm"// 默认输入值
+        help="The name of the component" /&gt;//底部提示语
+
+    &lt;parameter
+        id="activityLayoutName"
+        name="Layout Name"
+        type="string"
+        constraints="layout|unique|nonempty"
+        suggest="${activityToLayout(activityClass)}"
+        default="activity_mvp"
+        help="The name of the layout" /&gt;
+
+    &lt;parameter
+        id="isLauncher"
+        name="Launcher Activity"
+        type="boolean"
+        default="false"
+        help="If true, this activity will have a CATEGORY_LAUNCHER intent filter, making it visible in the launcher" /&gt;
+    
+    &lt;parameter
+        id="packageName"
+        name="Package name"
+        type="string"
+        constraints="package"
+        suggest="com.listen.test_mvpvm"
+        default="com.listen.test_mvpvm" /&gt;
+
+    &lt;globals file="globals.xml.ftl" /&gt;
+    &lt;execute file="recipe.xml.ftl" /&gt;
+
+&lt;/template&gt;
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>recipe.xml.flt：将root目录下的.flt文件解析成.java文件，并打开。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11</pre></td><td class="code"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<span class="nt">&lt;recipe&gt;</span>
+
+	<span class="c">&lt;!-- 处理模版 --&gt;</span>
+	<span class="nt">&lt;instantiate</span> <span class="na">from=</span><span class="s">"root/src/app_package/MvpActivity.java.ftl"</span>
+     	<span class="na">to=</span><span class="s">"${escapeXmlAttribute(srcOut)}/view/${activityClass}Activity.java"</span> <span class="nt">/&gt;</span>
+
+	<span class="c">&lt;!-- 打开xin --&gt;</span>
+ 	<span class="nt">&lt;open</span> <span class="na">file=</span><span class="s">"${escapeXmlAttribute(srcOut)}/view/${activityClass}Activity.java"</span> <span class="nt">/&gt;</span>
+
+<span class="nt">&lt;/recipe&gt;</span>
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>MvpActivity.java.flt文件示例，引用template中的
+“@{activityClass}”，”${activityLayoutName}”，就是在输入页面填写的ActivityName，和layoutName。将”@{}”解析后生成完整的Activity.java。其实Templates的原理，就是将你需要生成的java文件的公用部分抽取出来，用”@{}”占位符，替代会变化的keyWord，写成一个个.flt模版文件，同时在输入面板中将keyWord输入，并通过template.xml，recipe.xml等描述文件，最终合成我们需要的java文件。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16</pre></td><td class="code"><pre class="highlight"><code>public class ${activityClass}Activity extends AppCompatActivity implements I${activityClass}View {
+
+    private Activity${activityClass}Binding mBinding;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.${activityLayoutName});
+        mBinding.setPresenter(new ${activityClass}Presenter(this));
+    }
+
+    @Override
+    public void updateView(I${activityClass}ViewModel viewModel) {
+        mBinding.setData(viewModel);
+    }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>通过定义Templates，在每次新建一个页面时节省了大量重复的类创建工作，我们可以运用Templates定义各种页面模版，可以大幅度的提升开发效率。在日常工作中，应该尽可能减少一些纯体力的，重复的代码拷贝。不过为优化，为解耦而增加再多类，分再多模块都是值得的。</p>
+
+<blockquote>
+  <p>Templates更详细介绍可以参考鸿洋的文章，这里不做赘述：http://blog.csdn.net/lmj623565791/article/details/51635533</p>
+</blockquote>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+      
+      
+
+      
+      
+        <div class="post-nav" id="post-nav-id">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/android/2017/01/12/Android%E6%BA%90%E7%A0%81%E4%B8%AD%E7%9A%84%E4%B8%80%E7%A7%8D%E5%8D%95%E4%BE%8B%E5%AE%9E%E7%8E%B0/" rel="next" title="Android源码中的一种单例实现">
+                <i class="fa fa-chevron-left"></i> Android源码中的一种单例实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/android/2016/12/01/MVC-MVP-MVPVM-%E4%B8%80-%E5%AE%9E%E8%B7%B5%E4%B9%8B%E8%B7%AF/" rel="prev" title="MVC，MVP，MVPVM（一）实践之路">
+                MVC，MVP，MVPVM（一）实践之路 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+
+      
+    </footer>
+  </article>
+
+  <div class="post-spread">
+    
+  </div>
+</div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        
+        
+        
+
+
+
+
+
+
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/images/avatar.jpeg"
+               alt="listen" />
+          <p class="site-author-name" itemprop="name">listen</p>
+           
+              <p class="site-description motion-element" itemprop="description">a programmer’s tech world</p>
+          
+        </div>
+        <!-- <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav> -->
+
+        
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listen</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+    
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+

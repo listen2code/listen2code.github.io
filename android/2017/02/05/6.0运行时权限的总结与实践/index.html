@@ -1,0 +1,996 @@
+
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/assets/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/assets/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="　">
+<meta name="keywords" content="Android, Blog, listen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6.0运行时权限的总结与实践">
+<meta property="og:url" content="http://localhost:4000/android/2017/02/05/6.0%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9D%83%E9%99%90%E7%9A%84%E6%80%BB%E7%BB%93%E4%B8%8E%E5%AE%9E%E8%B7%B5/">
+<meta property="og:site_name" content="listen’s blog">
+<meta property="og:description" content="　">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/listen2code/article/blob/master/6.0运行时权限的总结与实践/screenshot/运行时权限.jpg?raw=true">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6.0运行时权限的总结与实践">
+<meta name="twitter:description" content="　">
+<meta name="twitter:image" content="https://github.com/listen2code/article/blob/master/6.0运行时权限的总结与实践/screenshot/运行时权限.jpg?raw=true">
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://localhost:4000/"/>
+
+
+
+
+
+  <title>6.0运行时权限的总结与实践 | listen’s blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">listen’s blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+<div id="posts" class="posts-expand">
+  
+  
+
+  
+
+  
+  
+  
+
+  <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/android/2017/02/05/6.0%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9D%83%E9%99%90%E7%9A%84%E6%80%BB%E7%BB%93%E4%B8%8E%E5%AE%9E%E8%B7%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="listen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/assets/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="listen’s blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+          
+          
+            6.0运行时权限的总结与实践
+          
+        </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-05T00:00:00+08:00">
+                2017-02-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/android" itemprop="url" rel="index">
+                    <span itemprop="name">android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+            
+                <div class="post-description">
+                    　
+                </div>
+            
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="https://github.com/listen2code/article/blob/master/6.0运行时权限的总结与实践/screenshot/运行时权限.jpg?raw=true" rel="gallery_"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="https://github.com/listen2code/article/blob/master/6.0运行时权限的总结与实践/screenshot/运行时权限.jpg?raw=true" itemprop="contentUrl"/>
+              </a>
+            
+          
+
+          
+          
+          </div>
+        </div>
+      
+
+      
+        
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <p>####为什么需要6.0运行时权限</p>
+<ul>
+  <li>更友好</li>
+</ul>
+
+<blockquote>
+  <p>6.0以前的安装时权限，会在应用安装时列出所有需要的权限，当列出一些危险权限时，用户不知每个权限的具体用途，可能因为这些权限警告而放弃安装应用。对于一些非装不可的应用，用户则不得不被迫接受所有权限，很容易安装了一些流氓APP，体验不佳。
+6.0以后的运行时权限，可以在调用相关功能之前判断权限授权状态，并自定义提示弹框告知用户权限用途，使用户清楚了解之后，再授权使用。</p>
+</blockquote>
+
+<p><img src="https://github.com/listen2code/article/blob/master/6.0运行时权限的总结与实践/screenshot/5.0和6.0的安装页面.png?raw=true" alt="5.0和6.0的安装页面.png" /></p>
+
+<ul>
+  <li>更稳定</li>
+</ul>
+
+<blockquote>
+  <p>6.0系统的手机对于每个应用，都有个权限设置页面，可以手动开关权限，如果用户在设置页面误关了某个权限，若没在程序运行时做判断，则会导致相关功能的调用失败，引起崩溃等。</p>
+</blockquote>
+
+<p><img src="https://github.com/listen2code/article/blob/master/6.0运行时权限的总结与实践/screenshot/5.0和6.0的权限设置页面.png?raw=true" alt="5.0和6.0的权限设置页面.png" /></p>
+
+<p>####如何实现运行时权限</p>
+
+<ul>
+  <li>设置targetSdkVersion</li>
+</ul>
+
+<blockquote>
+  <p>只有targetSdkVersion&gt;=23，且安装在6.0以上的手机时，运行时权限机制才能正常运作</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th>手机系统</th>
+      <th>targetSdkVersion&lt;23</th>
+      <th>targetSdkVersion&gt;=23</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>5.0+</td>
+      <td>安装时权限</td>
+      <td>安装时权限</td>
+    </tr>
+    <tr>
+      <td>6.0+</td>
+      <td>安装时权限</td>
+      <td><strong>运行时权限</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>代码实现</li>
+</ul>
+
+<blockquote>
+  <p>在需要使用某项权限时，通过V4包的checkSelfPermission判断权限是否授权，通过requestPermissions申请某项权限</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7</pre></td><td class="code"><pre class="highlight"><code>// 需要执行某项需要权限的操作时
+if (ContextCompat.checkSelfPermission(this, "某项权限") == PackageManager.PERMISSION_GRANTED) {
+   // 执行操作
+} else {
+   // 请求权限
+   ActivityCompat.requestPermissions(this, new String[]{"某项权限"}, requestCode);
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<blockquote>
+  <p>在Activity的onRequestPermissionsResult回调方法中，处理权限授权结果</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15</pre></td><td class="code"><pre class="highlight"><code>@Override
+public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+   if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+       // 授权成功,执行操作
+   } else {
+       // 权限被拒绝
+       if (ActivityCompat.shouldShowRequestPermissionRationale(this, "权限名称")) {
+           // shouldShowRequestPermissionRationale=true: 表示权限被拒绝,且没有勾选"never ask again"
+           // 正常的权限被拒绝流程,可以继续申请权限,重复以上流程
+       } else {
+           // shouldShowRequestPermissionRationale=false: 在权限被拒绝,且勾选"never ask again"的情况下，返回false
+           // 继续申请权限的时候,不会再弹出默认的系统弹框,需要自定义提示弹框,并引导用户去权限设置页面,手动开启权限
+       }
+   }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>####LsPermission工具类的使用</p>
+
+<ul>
+  <li>主要实现逻辑参考<a href="https://github.com/lovedise/PermissionGen">PermissionGen</a>，封装了权限判断，请求，结果处理等通用逻辑，目前只支持context=AppCompatActivity，如果在Fragment中使用时可以调用getActivity()获取上层AppCompatActivity。</li>
+</ul>
+
+<p><img src="https://github.com/listen2code/article/blob/master/6.0运行时权限的总结与实践/gif/运行时权限.gif?raw=true" alt="demo演示.gif" /></p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22<br/>23<br/>24<br/>25<br/>26<br/>27<br/>28<br/>29<br/>30<br/>31<br/>32<br/>33<br/>34<br/>35<br/>36<br/>37<br/>38<br/>39<br/>40<br/>41<br/>42<br/>43<br/>44<br/>45<br/>46<br/>47<br/>48<br/>49<br/>50<br/>51<br/>52<br/>53</pre></td><td class="code"><pre class="highlight"><code>private void normal() {
+   final String[] permissions =
+       new String[] {Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_FINE_LOCATION};
+
+   PermissionUtil.request(this, permissions, new OnPermissionAdapter() {
+       /**
+        * @desc 申请的权限全被授权
+        */
+       @Override
+       public void onGrant() {
+           showToast("权限被同意");
+           callPhone();
+       }
+
+       /**
+        * @desc 权限被拒绝
+        */
+       @Override
+       public void onDeny(List&lt;String&gt; permissions) {
+           showToast("用户拒绝授权" + permissions.toString());
+       }
+
+       /**
+        * @desc 权限被拒绝,且勾选"never ask again"
+        */
+       @Override
+       public void onNeverAsk(List&lt;String&gt; permissions) {
+           showToast("用户拒绝授权, 并勾选 never ask again " + permissions.toString());
+           PermissionUtil.showNeverAskDialog(MainActivity.this, "这个权限很重要");
+       }
+       
+       /**
+        * @desc 无论权限授权成功还是失败，都会回调
+        */
+       @Override
+       public void always(List&lt;String&gt; grantPermissions, List&lt;String&gt; denyPermissions,
+           List&lt;String&gt; foreverDenyPermissions) {
+           showToast("授权: " + grantPermissions.toString() + "\n 拒绝: " + denyPermissions.toString()
+               + "\n never ask: " + foreverDenyPermissions.toString());
+       }
+   });
+}
+
+/**
+* @desc 将权限回调转发给PermissionUtil处理
+* @author listen
+* @date 2017/2/24 13:47
+*/
+@Override
+public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+   PermissionUtil.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+   super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<ul>
+  <li>PermissionUtil内部通过SparseArray保存了requestCode和权限回调的键值对，避免了连续点击时重复回调情况，对于不同的权限申请，推荐使用不同的requestCode，避免回调覆盖的问题。</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19</pre></td><td class="code"><pre class="highlight"><code>private static SparseArray&lt;OnPermissionListener&gt; mPermissionRequestList = new SparseArray&lt;&gt;();
+
+public static void request(final Context context, int requestCode, String[] permissions,
+                          OnPermissionListener listener) {
+   /** 存在未授权的权限 */
+   synchronized (mPermissionRequestList) {
+       if (null != mPermissionRequestList.get(requestCode)) {
+           /** 当前权限请求已经存在,不重复添加 */
+           log("the same permission is requesting");
+       } else {
+           /** 将当前权限请求加入队列 */
+           /** 如果一个页面中存在分别触发A, B多个权限的情况, 则最好将不同权限申请对应不同的requestCode, 存入SparseArray分别处理 */
+           mPermissionRequestList.put(requestCode, listener);
+
+           /** 执行权限申请 */
+           ActivityCompat.requestPermissions();
+       }
+   }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>在权限回调的时候从SparseArray移除Listener</p>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18</pre></td><td class="code"><pre class="highlight"><code>public static void onRequestPermissionsResult(Context context, int requestCode, String[] permissions,
+                                                  int[] grantResults) {
+   final OnPermissionListener listener;
+   synchronized (mPermissionRequestList) {
+       listener = mPermissionRequestList.get(requestCode);
+       mPermissionRequestList.remove(requestCode);
+   }
+
+   if (null != listener) {
+       /** 执行回调 */
+       listener.onGrant();
+       listener.onDeny();
+       listener.onNeverAsk();
+       listener.always();
+   } else {
+       log("request is not exists");
+   }
+}
+</code></pre></td></tr></tbody></table></div></div>
+
+<p>代码地址：<a href="https://github.com/listen2code/LsPermission">LsPermission</a></p>
+
+<p>除了基本的权限申请逻辑的封装以外，还写了类似微信，支付宝，百度地图等在启动页的权限申请Demo，算是PermissionUtil的简单运用。</p>
+
+<p>参考：
+<a href="http://blog.csdn.net/lmj623565791/article/details/50709663">Android 6.0 运行时权限处理完全解析</a>
+<a href="https://gold.xitu.io/post/57d5de3e2e958a00546a7465">Android 6.0 运行时权限管理最佳实践</a>
+<a href="http://droidyue.com/blog/2016/01/17/understanding-marshmallow-runtime-permission/index.html">聊一聊Android 6.0的运行时权限</a></p>
+
+<p>官方：
+<a href="https://developer.android.com/training/permissions/requesting.html?hl=zh-cn">在运行时请求权限</a>
+<a href="https://developer.android.com/training/permissions/best-practices.html?hl=zh-cn">权限最佳做法</a></p>
+
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+      
+      
+
+      
+      
+        <div class="post-nav" id="post-nav-id">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/android/2018/04/07/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E4%B8%80-%E5%A0%86%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90/" rel="next" title="性能优化（一）堆内存分析">
+                <i class="fa fa-chevron-left"></i> 性能优化（一）堆内存分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/android/2017/01/12/Android%E6%BA%90%E7%A0%81%E4%B8%AD%E7%9A%84%E4%B8%80%E7%A7%8D%E5%8D%95%E4%BE%8B%E5%AE%9E%E7%8E%B0/" rel="prev" title="Android源码中的一种单例实现">
+                Android源码中的一种单例实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+      
+
+      
+    </footer>
+  </article>
+
+  <div class="post-spread">
+    
+  </div>
+</div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        
+        
+        
+
+
+
+
+
+
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/assets/images/avatar.jpeg"
+               alt="listen" />
+          <p class="site-author-name" itemprop="name">listen</p>
+           
+              <p class="site-description motion-element" itemprop="description">a programmer’s tech world</p>
+          
+        </div>
+        <!-- <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav> -->
+
+        
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">listen</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+   
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="/assets/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/assets/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+    
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
+
