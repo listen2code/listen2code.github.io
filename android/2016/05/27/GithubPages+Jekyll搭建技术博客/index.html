@@ -469,7 +469,7 @@ bundle
 # 检查bundle执行结果
 bundle info jekyll
 #jekyll (4.0.0)
-#	Summary: A simple, blog aware, static site generator
+# Summary: A simple, blog aware, static site generator
 </code></pre></td></tr></tbody></table></div></div>
 
 <h4 id="新建首页">新建首页</h4>
@@ -551,7 +551,7 @@ title: Home
 
 <h4 id="_includes目录用于存放可以复用的组件">_includes目录：用于存放可以复用的组件</h4>
 
-<p>新建”/User/xx/root/_includes/navigation.html”，设置导航栏的链接</p>
+<p>新建”/User/xx/root/_includes/navigation.html”，设置导航条目的link</p>
 
 <div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>&lt;nav&gt;
   &lt;a href="/"&gt;Home&lt;/a&gt;
@@ -578,7 +578,7 @@ title: Home
 
 <h4 id="_data目录存放数据">_data目录：存放数据</h4>
 
-<p>新建”/User/xx/root/_data/navigation.yml”，Jekyll默认将生成site.data.navigation数据集合</p>
+<p>新建”/User/xx/root/_data/navigation.yml”，Jekyll默认将生成可以直接访问的site.data.navigation数据集合</p>
 
 <div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4</pre></td><td class="code"><pre class="highlight"><code>- name: Home
   link: /
@@ -599,10 +599,9 @@ title: Home
 
 </code></pre></td></tr></tbody></table></div></div>
 
-<h4 id="_posts目录存放blog文件的目录">_posts目录：存放blog文件的目录</h4>
+<h4 id="_posts目录存放blog文件的目录111">_posts目录：存放blog文件的目录111</h4>
 
-<p>新建”/User/xx/root/_posts/2019-1-1-blog1.html”，
-与_data目录同理，Jekyll将会在/User/xx/root/_site目录下生成”2019/01/01/blog1.html”</p>
+<p>新建”/User/xx/root/_posts/2019-1-1-blog1.html”，Jekyll将会在/User/xx/root/_site/2019/01/01目录下生成blog1.html</p>
 
 <div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5</pre></td><td class="code"><pre class="highlight"><code>---
 layout: post
@@ -641,7 +640,31 @@ title: Blog
 
 </code></pre></td></tr></tbody></table></div></div>
 
-<h4 id="发布将_site目录下的内容拷贝到github的usernamegithubio目录下即可完成发布">发布：将_site目录下的内容拷贝到github的username.github.io目录下即可完成发布</h4>
+<h4 id="发布">发布</h4>
+
+<blockquote>
+  <p>执行”bundler exec”后自动生成_site目录，将_site目录下的内容拷贝到github的username.github.io目录下即完成发布</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18</pre></td><td class="code"><pre class="highlight"><code>.
+├── _config.yml
+├── index.html
+├── blog_list.html
+├── about.html
+├── _data
+|   └── navigation.yml
+├── _includes
+|   ├── navigation.html
+|   └── header.html
+├── _layouts
+|   ├── default.html
+|   └── post.html
+├── _posts
+|   ├── 2019-1-1-blog1.html
+├── _site
+|   ├── 执行"bundler exec"后自动生成的html文件
+|
+</code></pre></td></tr></tbody></table></div></div>
 
 <h3 id="jekyllthemes快速搭建">jekyllthemes快速搭建</h3>
 
@@ -659,6 +682,7 @@ title: Blog
   <li>将_site目录下的内容拷贝到listen2code.github.io的localpath，并同步到github</li>
   <li>访问https://listen2code.github.io</li>
 </ul>
+
 
 
       
@@ -861,7 +885,7 @@ title: Blog
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-3"> <a class="nav-link" href="#初始化github-pages"> <span class="nav-number">1</span> <span class="nav-text">初始化Github Pages</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#step-by-step-to-jekyll"> <span class="nav-number">2</span> <span class="nav-text">Step by Step to Jekyll</a</span> </a> <ol class="nav-child"> <li class="nav-item nav-level-4"> <a class="nav-link" href="#环境搭建由于jekyll是用ruby写的所以先搭建ruby环境版本240"> <span class="nav-number">2.1</span> <span class="nav-text">环境搭建：由于Jekyll是用Ruby写的，所以先搭建Ruby环境（版本&gt;2.4.0）</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#新建首页"> <span class="nav-number">2.2</span> <span class="nav-text">新建首页</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#liquid语法"> <span class="nav-number">2.3</span> <span class="nav-text">Liquid语法</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#_layouts目录用于存放布局模板文件"> <span class="nav-number">2.4</span> <span class="nav-text">_layouts目录：用于存放布局模板文件</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#_includes目录用于存放可以复用的组件"> <span class="nav-number">2.5</span> <span class="nav-text">_includes目录：用于存放可以复用的组件</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#_data目录存放数据"> <span class="nav-number">2.6</span> <span class="nav-text">_data目录：存放数据</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#_posts目录存放blog文件的目录"> <span class="nav-number">2.7</span> <span class="nav-text">_posts目录：存放blog文件的目录</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#发布将_site目录下的内容拷贝到github的usernamegithubio目录下即可完成发布"> <span class="nav-number">2.8</span> <span class="nav-text">发布：将_site目录下的内容拷贝到github的username.github.io目录下即可完成发布</span> </a> </li> </ol> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#jekyllthemes快速搭建"> <span class="nav-number">3</span> <span class="nav-text">jekyllthemes快速搭建</span> </a> </li>
+      <li class="nav-item nav-level-3"> <a class="nav-link" href="#初始化github-pages"> <span class="nav-number">1</span> <span class="nav-text">初始化Github Pages</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#step-by-step-to-jekyll"> <span class="nav-number">2</span> <span class="nav-text">Step by Step to Jekyll</a</span> </a> <ol class="nav-child"> <li class="nav-item nav-level-4"> <a class="nav-link" href="#环境搭建由于jekyll是用ruby写的所以先搭建ruby环境版本240"> <span class="nav-number">2.1</span> <span class="nav-text">环境搭建：由于Jekyll是用Ruby写的，所以先搭建Ruby环境（版本&gt;2.4.0）</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#新建首页"> <span class="nav-number">2.2</span> <span class="nav-text">新建首页</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#liquid语法"> <span class="nav-number">2.3</span> <span class="nav-text">Liquid语法</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#_layouts目录用于存放布局模板文件"> <span class="nav-number">2.4</span> <span class="nav-text">_layouts目录：用于存放布局模板文件</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#_includes目录用于存放可以复用的组件"> <span class="nav-number">2.5</span> <span class="nav-text">_includes目录：用于存放可以复用的组件</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#_data目录存放数据"> <span class="nav-number">2.6</span> <span class="nav-text">_data目录：存放数据</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#_posts目录存放blog文件的目录111"> <span class="nav-number">2.7</span> <span class="nav-text">_posts目录：存放blog文件的目录111</span> </a> </li> <li class="nav-item nav-level-4"> <a class="nav-link" href="#发布"> <span class="nav-number">2.8</span> <span class="nav-text">发布</span> </a> </li> </ol> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#jekyllthemes快速搭建"> <span class="nav-number">3</span> <span class="nav-text">jekyllthemes快速搭建</span> </a> </li>
     </ol>
   </div>
             

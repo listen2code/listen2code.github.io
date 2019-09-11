@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-09-09T22:14:05+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">listen’s blog</title><subtitle>a programmer’s tech world</subtitle><author><name>listen</name></author><entry><title type="html">从客户端的角度设计后端的接口</title><link href="http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l/" rel="alternate" type="text/html" title="从客户端的角度设计后端的接口" /><published>2019-08-10T00:00:00+08:00</published><updated>2019-08-10T00:00:00+08:00</updated><id>http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l</id><content type="html" xml:base="http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l/">&lt;h4 id=&quot;前言&quot;&gt;前言&lt;/h4&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-09-11T18:13:03+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">listen’s blog</title><subtitle>a programmer’s tech world</subtitle><author><name>listen</name></author><entry><title type="html">从客户端的角度设计后端的接口</title><link href="http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l/" rel="alternate" type="text/html" title="从客户端的角度设计后端的接口" /><published>2019-08-10T00:00:00+08:00</published><updated>2019-08-10T00:00:00+08:00</updated><id>http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l</id><content type="html" xml:base="http://localhost:4000/android/2019/08/10/%E4%BB%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%A7%92%E5%BA%A6%E8%AE%BE%E8%AE%A1%E5%90%8E%E7%AB%AF%E7%9A%84%E6%8E%A5%E5%8F%A3l/">&lt;h4 id=&quot;前言&quot;&gt;前言&lt;/h4&gt;
 &lt;blockquote&gt;
   &lt;p&gt;兵马未动，粮草先行。在一款APP产品的各个版本迭代中，兵马的启动指的是真正开始敲代码的时候，粮草先行则是指前期的需求，交互，UI等评审准备阶段，还有本文要说的接口的设计与评审。虽然很多时候一个api接口的业务，数据逻辑是后端提供的，但真正使用这个接口的是客户端，一个前端功能的实现流程与逻辑，有时候只有客户端的RD才清楚，从某种意义来说，客户端算是接口的需求方。所以建议在前期接口设计和评审时，客户端的RD应该更多的思考和参与，什么时机调什么接口？每个接口需要哪些字段？数据含义怎么给？只有这些都考虑清楚，且达成一致并产出接口文档后，当项目真正启动时，根据接口协议进行开发，才能尽量避免各种不确定因素对项目整体进度的影响。本文介绍了接口设计中常见的规范，以及个人的一些思考与总结，水平有限，权当是抛砖引玉，如果有更好的设计，请在文章下方留言告诉我，谢谢。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -4636,7 +4636,7 @@ bundle
 # 检查bundle执行结果
 bundle info jekyll
 #jekyll (4.0.0)
-#	Summary: A simple, blog aware, static site generator
+# Summary: A simple, blog aware, static site generator
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h4 id=&quot;新建首页&quot;&gt;新建首页&lt;/h4&gt;
@@ -4718,7 +4718,7 @@ title: Home
 
 &lt;h4 id=&quot;_includes目录用于存放可以复用的组件&quot;&gt;_includes目录：用于存放可以复用的组件&lt;/h4&gt;
 
-&lt;p&gt;新建”/User/xx/root/_includes/navigation.html”，设置导航栏的链接&lt;/p&gt;
+&lt;p&gt;新建”/User/xx/root/_includes/navigation.html”，设置导航条目的link&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;nav&amp;gt;
   &amp;lt;a href=&quot;/&quot;&amp;gt;Home&amp;lt;/a&amp;gt;
@@ -4745,7 +4745,7 @@ title: Home
 
 &lt;h4 id=&quot;_data目录存放数据&quot;&gt;_data目录：存放数据&lt;/h4&gt;
 
-&lt;p&gt;新建”/User/xx/root/_data/navigation.yml”，Jekyll默认将生成site.data.navigation数据集合&lt;/p&gt;
+&lt;p&gt;新建”/User/xx/root/_data/navigation.yml”，Jekyll默认将生成可以直接访问的site.data.navigation数据集合&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- name: Home
   link: /
@@ -4766,10 +4766,9 @@ title: Home
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h4 id=&quot;_posts目录存放blog文件的目录&quot;&gt;_posts目录：存放blog文件的目录&lt;/h4&gt;
+&lt;h4 id=&quot;_posts目录存放blog文件的目录111&quot;&gt;_posts目录：存放blog文件的目录111&lt;/h4&gt;
 
-&lt;p&gt;新建”/User/xx/root/_posts/2019-1-1-blog1.html”，
-与_data目录同理，Jekyll将会在/User/xx/root/_site目录下生成”2019/01/01/blog1.html”&lt;/p&gt;
+&lt;p&gt;新建”/User/xx/root/_posts/2019-1-1-blog1.html”，Jekyll将会在/User/xx/root/_site/2019/01/01目录下生成blog1.html&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;---
 layout: post
@@ -4808,7 +4807,31 @@ title: Blog
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h4 id=&quot;发布将_site目录下的内容拷贝到github的usernamegithubio目录下即可完成发布&quot;&gt;发布：将_site目录下的内容拷贝到github的username.github.io目录下即可完成发布&lt;/h4&gt;
+&lt;h4 id=&quot;发布&quot;&gt;发布&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;执行”bundler exec”后自动生成_site目录，将_site目录下的内容拷贝到github的username.github.io目录下即完成发布&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.
+├── _config.yml
+├── index.html
+├── blog_list.html
+├── about.html
+├── _data
+|   └── navigation.yml
+├── _includes
+|   ├── navigation.html
+|   └── header.html
+├── _layouts
+|   ├── default.html
+|   └── post.html
+├── _posts
+|   ├── 2019-1-1-blog1.html
+├── _site
+|   ├── 执行&quot;bundler exec&quot;后自动生成的html文件
+|
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;jekyllthemes快速搭建&quot;&gt;jekyllthemes快速搭建&lt;/h3&gt;
 
